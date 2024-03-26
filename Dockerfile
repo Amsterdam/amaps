@@ -9,4 +9,8 @@ RUN apk add -U tzdata \
   && rm -rf \
   /var/cache/apk/*
 
+EXPOSE 8080
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 COPY dist /usr/share/nginx/html

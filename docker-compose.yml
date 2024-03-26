@@ -4,6 +4,6 @@ services:
     build:
       context: .
     ports:
-      - 8095:80
+      - 8095:8080
     image: ${REGISTRY:-localhost:5001}/${REPOSITORY:-opdrachten/amaps}:${VERSION:-latest}
 
