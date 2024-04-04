@@ -8209,20 +8209,20 @@ var getOmgevingInfo = function () {
         switch (_context3.prev = _context3.next) {
           case 0:
             _context3.next = 2;
-            return query$1("https://api.data.amsterdam.nl/geosearch/bag/?lat=" + data.query.latitude + "&lon=" + data.query.longitude + "&radius=50");
+            return query$1("https://api.data.amsterdam.nl/geosearch/?datasets=gebieden%2Fstadsdelen%2Cgebieden%2Fbuurten%2Cgebieden%2Fwijken&_fields=code&lat=" + data.query.latitude + "&lon=" + data.query.longitude + "&radius=50");
 
           case 2:
             res = _context3.sent;
-            buurtinfo = findOmgevingFeature(res.features, "gebieden/buurt");
-            wijkinfo = findOmgevingFeature(res.features, "gebieden/buurtcombinatie");
-            stadsdeelinfo = findOmgevingFeature(res.features, "gebieden/stadsdeel");
+            buurtinfo = findOmgevingFeature(res.features, "gebieden/buurten");
+            wijkinfo = findOmgevingFeature(res.features, "gebieden/wijken");
+            stadsdeelinfo = findOmgevingFeature(res.features, "gebieden/stadsdelen");
 
             if (buurtinfo !== null && wijkinfo !== null && stadsdeelinfo !== null) {
               data.omgevingsinfo = {
                 buurtnaam: buurtinfo !== undefined ? buurtinfo.display : null,
-                buurtcode: buurtinfo !== undefined ? buurtinfo.vollcode : null,
+                buurtcode: buurtinfo !== undefined ? buurtinfo.code : null,
                 wijknaam: wijkinfo !== undefined ? wijkinfo.display : null,
-                wijkcode: wijkinfo !== undefined ? wijkinfo.vollcode : null,
+                wijkcode: wijkinfo !== undefined ? wijkinfo.code : null,
                 stadsdeelnaam: stadsdeelinfo !== undefined ? stadsdeelinfo.display : null,
                 stadsdeelcode: stadsdeelinfo !== undefined ? stadsdeelinfo.code : null
               };
