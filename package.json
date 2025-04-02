@@ -78,7 +78,7 @@
     "build-amaps": "node scripts/build-amaps.js",
     "build": "npm run build-amaps --production",
     "watch-build-amaps": "NODE_ENV=development node scripts/build-amaps.js -w",
-    "get-nlmaps": "shx rm -rf nlmaps && git clone --depth=1 --branch 9-remove-buffertools https://github.com/webmapper/nlmaps",
+    "get-nlmaps": "shx rm -rf nlmaps && git clone --depth=1 --branch v2.3.45 https://github.com/webmapper/nlmaps",
     "install-nlmaps": "node scripts/install-nlmaps.js",
     "build-nlmaps": "node scripts/build-nlmaps.js",
     "watch-nlmaps": "nodemon --watch config --exec npm run build-nlmaps",
