@@ -1,6 +1,4 @@
-name: Vakgroep SO Dependabot
-# This workflow assumes you have a Makefile in the root of your repository with the target "requirements"
-# The workflow will build the docker image with name "Dockerfile" in the root of the repository
+name: Opdrachten Team Dependabot,
 
 on:
   schedule: # Run the script on the 1st and 15th of every month
