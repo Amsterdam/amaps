@@ -1,4 +1,4 @@
-name: Opdrachten Team Dependabot,
+name: Opdrachten Team Dependabot
 
 on:
   schedule: # Run the script on the 1st and 15th of every month
