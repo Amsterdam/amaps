@@ -1,0 +1,22 @@
+name: Opdrachten Team Dependabot
+
+on:
+  schedule: # Run the script on the 1st and 15th of every month
+    - cron: '0 6 1 * *'
+  workflow_dispatch: # Creates button on Github to trigger the workflow manually
+
+
+jobs:
+  dependabot:
+    name: Dependabot
+    uses: amsterdam/github-workflows/.github/workflows/dependabot.yml@v1
+    secrets: inherit  # Inherit secrets from the repository. You need to define "SLACK_TOKEN" in settings -> secrets -> actions!
+    with:
+      check_diff: true  # Create a list of major upgrades. Requires the Makefile target "diff"
+      slack_channel: 'opdrachten-dependabot'  # Slack channel to post release steps to
+      timetell_code: 76400112  # Timetell project id
+      acceptance_pipeline: "https://dev.azure.com/CloudCompetenceCenter/Opdrachten/_build?definitionId=3620"
+      production_pipeline: "https://dev.azure.com/CloudCompetenceCenter/Opdrachten/_build?definitionId=3620"
+      acceptance_urls: "acc.amaps.amsterdam.nl/multiselect.html"
+      production_urls: "amaps.amsterdam.nl/multiselect.html"
+
