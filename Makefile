@@ -18,8 +18,5 @@ dev:
 bash:
 	$(run) dev bash
 
-test:
-	$(run) test-unit
-
 requirements:  ## Upgrade dependencies
 	$(run) upgrade $(ARGS)
