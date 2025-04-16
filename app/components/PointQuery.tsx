@@ -4,7 +4,7 @@ import { PointQueryProvider } from "./PointQueryContext";
 import PointQueryResult from "./PointQueryResult";
 import styles from "../styles/main.module.css";
 import Controls from "./ZoomControlsPQ";
-import AddressSearch from "./AddressSearch";
+import AddressSearch from "./AddressSearchPQ";
 
 const MultiSelect: FunctionComponent = () => (
   <PointQueryProvider>
@@ -12,6 +12,7 @@ const MultiSelect: FunctionComponent = () => (
       <div className={styles.mapWrapper}>
         <PointQueryMap />
         <Controls />
+        <AddressSearch />
       </div>
       <div className={styles.resultWrapper}>
         <PointQueryResult />
