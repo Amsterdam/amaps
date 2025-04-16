@@ -21,4 +21,7 @@ FROM nginx:stable-alpine AS production
 
 
 EXPOSE 8080
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 COPY --from=build /app/app/dist/. /usr/share/nginx/html/
+
