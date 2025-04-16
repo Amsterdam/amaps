@@ -1,0 +1,21 @@
+version: "3.5"
+services:
+  app:
+    build:
+      context: .
+    environment:
+      - TZ=Europe/Amsterdam
+    image: ${REGISTRY:-localhost:5000}/${REPOSITORY:-opdrachten/amaps}:${VERSION:-latest}
+    ports:
+      - "3000:8000"
+
+  dev:
+    build:
+      context: .
+      target: base
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+    command: npm run dev
+    ports:
+      - "3000:3000"
