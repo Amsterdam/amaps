@@ -3,7 +3,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import styles from "../styles/map.module.css";
 import getCrsRd from "../utils/getCrsRd";
-import { usePointQuery } from "./PointQueryContext";
+import { usePointQuery, useMapInstance } from "./PointQueryContext";
 import { pointQueryChain } from "../utils/pointQuery";
 
 const PointQueryMap = () => {
@@ -11,6 +11,7 @@ const PointQueryMap = () => {
   const markerRef = useRef<L.Marker | null>(null);
   const mapRef = useRef<L.Map | null>(null);
   const { setResult } = usePointQuery();
+  const { setMapInstance } = useMapInstance();
 
   useEffect(() => {
     if (containerRef.current === null || mapRef.current) {
@@ -38,6 +39,7 @@ const PointQueryMap = () => {
     });
 
     mapRef.current = map;
+    setMapInstance(map);
 
     // Remove Leaflet link from the map
     map.attributionControl.setPrefix(false);

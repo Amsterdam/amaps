@@ -121,11 +121,8 @@ const Map: FunctionComponent = () => {
         const bounds = mapInstance.getBounds();
         const url = formatWfsUrl(bounds);
         try {
-          console.log(url);
           const res = await fetch(url);
-          console.log(res);
           const geo = await res.json();
-          console.log("b");
           setMarkerData((prev) => {
             const fetched = geo.features;
             const fetchedIds = new Set(fetched.map((f) => f.properties.id));
