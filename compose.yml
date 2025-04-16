@@ -5,9 +5,9 @@ services:
       context: .
     environment:
       - TZ=Europe/Amsterdam
-    image: ${REGISTRY:-localhost:5000}/${REPOSITORY:-opdrachten/amaps}:${VERSION:-latest}
+    image: ${REGISTRY:-localhost:5001}/${REPOSITORY:-opdrachten/amaps}:${VERSION:-latest}
     ports:
-      - "3000:8000"
+      - 8095:8080
 
   dev:
     build:
@@ -18,4 +18,4 @@ services:
       - ./public:/app/public
     command: npm run dev
     ports:
-      - "3000:3000"
+      - 8095:8080
