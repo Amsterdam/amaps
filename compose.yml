@@ -7,7 +7,7 @@ services:
       - TZ=Europe/Amsterdam
     image: ${REGISTRY:-localhost:5001}/${REPOSITORY:-opdrachten/amaps}:${VERSION:-latest}
     ports:
-      - "3000:8000"
+      - "3000:8080"
 
   dev:
     build:
