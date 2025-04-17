@@ -1,0 +1,28 @@
+.searchWrapper {
+  position: absolute;
+  top: 1rem;
+  width: 30rem;
+  max-height: 50px;
+  z-index: 401;
+  transform: scale(0.9);
+}
+
+.dropdown {
+  background: white;
+  border: 1px solid #ddd;
+  max-height: 200px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 1.1rem;
+}
+
+.dropdown li {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.dropdown li:hover {
+  background-color: #eee;
+}

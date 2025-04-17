@@ -1,16 +1,27 @@
-FROM nginx:1.25.4-alpine3.18
-LABEL maintainer="datapunt@amsterdam.nl"
+FROM node:20-alpine AS base
+WORKDIR /app
+COPY package.json package-lock.json tsconfig.json ./
 
-ENV DEFAULT_TZ=Europe/Amsterdam
+RUN npm install
 
-RUN apk add -U tzdata \
-  && cp /usr/share/zoneinfo/${DEFAULT_TZ} /etc/localtime \
-  && apk del tzdata \
-  && rm -rf \
-  /var/cache/apk/*
+COPY app /app/src
+
+FROM base AS build
+WORKDIR /app
+COPY app ./app
+COPY vite.config.* ./
+COPY tsconfig.json ./
+#RUN echo "BEFOREBUILD" && ls -la /app && ls -la /app/public && ls -la /app/dist
+
+RUN npm run build
+
+
+
+FROM nginx:stable-alpine AS production
+
 
 EXPOSE 8080
-
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY dist /usr/share/nginx/html
+COPY --from=build /app/app/dist/. /usr/share/nginx/html/
+
