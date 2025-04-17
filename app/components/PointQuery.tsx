@@ -3,8 +3,8 @@ import PointQueryMap from "./PointQueryMap";
 import { PointQueryProvider } from "./PointQueryContext";
 import PointQueryResult from "./PointQueryResult";
 import styles from "../styles/main.module.css";
-import Controls from "./ZoomControlsPQ";
-import AddressSearch from "./AddressSearchPQ";
+import Controls from "./ZoomControls";
+import AddressSearch from "./AddressSearch";
 
 const MultiSelect: FunctionComponent = () => (
   <PointQueryProvider>

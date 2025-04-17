@@ -3,8 +3,8 @@ import Map from "./MultiSelectMap";
 import MapProvider from "./MultiSelectProvider";
 import MultiSelectResult from "./MultiSelectResult";
 import styles from "../styles/main.module.css";
-import Controls from "./ZoomControlsMS";
-import AddressSearch from "./AddressSearchMS";
+import Controls from "./ZoomControls";
+import AddressSearch from "./AddressSearch";
 
 const MultiSelect: FunctionComponent = () => (
   <MapProvider>

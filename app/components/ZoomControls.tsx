@@ -3,11 +3,15 @@ import {
   EnlargeIcon,
   MinimiseIcon,
 } from "@amsterdam/design-system-react-icons";
-import { useMapInstance } from "./PointQueryContext";
+import { useMapInstance as useMapMS } from "./MultiSelectContext";
+import { useMapInstance as useMapPQ } from "./PointQueryContext";
 import styles from "../styles/controls.module.css";
+import { useLocation } from "react-router";
 
 const Controls = () => {
-  const { mapInstance } = useMapInstance();
+  const { mapInstance } = useLocation().pathname.includes("multiselect")
+    ? useMapMS()
+    : useMapPQ();
 
   const handleZoomInClick = () => {
     if (mapInstance) {

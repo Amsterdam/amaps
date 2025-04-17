@@ -1,7 +1,9 @@
 import { SearchField } from "@amsterdam/design-system-react";
 import React, { useEffect, useState } from "react";
-import { useMapInstance } from "./PointQueryContext";
+import { useMapInstance as useMapMS } from "./MultiSelectContext";
+import { useMapInstance as useMapPQ } from "./PointQueryContext";
 import styles from "../styles/search.module.css";
+import { useLocation } from "react-router-dom";
 
 interface Suggestion {
   id: string;
@@ -11,7 +13,9 @@ interface Suggestion {
 const AddressSearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
-  const { mapInstance } = useMapInstance();
+  const { mapInstance } = useLocation().pathname.includes("multiselect")
+    ? useMapMS()
+    : useMapPQ();
 
   useEffect(() => {
     const fetchSuggestions = async () => {
@@ -48,7 +52,7 @@ const AddressSearch = () => {
     console.log(coordinates);
     if (coordinates && mapInstance) {
       const [lng, lat] = coordinates.match(/\d+\.\d*/g).map(Number);
-      mapInstance.flyTo([lat, lng], 14);
+      mapInstance.panTo([lat, lng], 14);
     }
   };
 
