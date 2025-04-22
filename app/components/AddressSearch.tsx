@@ -51,6 +51,7 @@ const AddressSearch = () => {
     const coordinates = data.response.docs[0]?.centroide_ll;
     console.log(coordinates);
     if (coordinates && mapInstance) {
+      mapInstance.setZoom(14);
       const [lng, lat] = coordinates.match(/\d+\.\d*/g).map(Number);
       mapInstance.panTo([lat, lng], 14);
     }
