@@ -47,7 +47,7 @@ export interface PointQueryResult {
 
 function requestFormatter(baseUrl: string, xy: LatLng): string {
   const rd = transformCoords.forward([xy.lng, xy.lat]);
-  return `${baseUrl}${rd[0]},${rd[1]},50`;
+  return `${baseUrl}X=${rd[0]}&Y=${rd[1]}&type=adres&distance=50&`;
 }
 
 async function query<T>(url: string): Promise<T> {
@@ -56,15 +56,23 @@ async function query<T>(url: string): Promise<T> {
   return res.json();
 }
 
-function responseFormatter(res: any, searchId: string | false): any {
-  if (!res.results) {
+async function getBagID(id: any): Promise<string> {
+  if (!id) {
+    throw new Error("No adress ID was given");
+  }
+  const lookupURL =
+    "https://api.pdok.nl/bzk/locatieserver/search/v3_1/lookup?id=";
+  const res = await query<any>(lookupURL + id);
+
+  return res.response.docs[0].nummeraanduiding_id;
+}
+
+function responseFormatter(res: any): any {
+  if (!res.response.docs) {
     throw new Error("no results property found on query response.");
   }
-  const filtered = searchId
-    ? res.results.filter((x: any) => x.landelijk_id === searchId)
-    : res.results.filter((x: any) => x.type_adres === "Hoofdadres");
 
-  return filtered.length > 0 ? filtered[0] : null;
+  return res.response.docs.length > 0 ? res.response.docs[0].id : null;
 }
 
 function findOmgevingFeature(features: any[], type: string): any | null {
@@ -77,27 +85,30 @@ export async function pointQueryChain(
   feature: any
 ): Promise<PointQueryResult> {
   const xy = click.latlng;
-  const nummeraanduidingId = click.resultObject?.nummeraanduiding_id ?? false;
 
   const bagUrl = requestFormatter(
-    "https://api.data.amsterdam.nl/bag/v1.1/nummeraanduiding/?format=json&locatie=",
+    "https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse?",
     xy
   );
 
   const bagQuery = await query<any>(bagUrl);
-  const queryResult = responseFormatter(bagQuery, nummeraanduidingId);
+  const queryResult = responseFormatter(bagQuery);
 
+  const bagID = await getBagID(queryResult);
+  console.log(bagID);
   let dichtsbijzijnd_adres: BagAdres | null = null;
 
   if (queryResult) {
-    const res = await query<any>(queryResult._links.self.href);
+    const nummeraanduidingUrl =
+      "https://api.data.amsterdam.nl/v1/bag/nummeraanduidingen/";
+    const res = await query<any>(nummeraanduidingUrl + bagID + "/?format=json");
     dichtsbijzijnd_adres = {
-      openbare_ruimte: res.openbare_ruimte._display,
+      openbare_ruimte: res._links.ligtAanOpenbareruimte.title,
       huisnummer: res.huisnummer,
-      huisletter: res.huisletter,
-      huisnummer_toevoeging: res.huisnummer_toevoeging,
+      huisletter: res.huisletter || "",
+      huisnummer_toevoeging: res.huisnummer_toevoeging || "",
       postcode: res.postcode,
-      woonplaats: res.woonplaats._display,
+      woonplaats: res._links.ligtInWoonplaats.title,
     };
   }
 
