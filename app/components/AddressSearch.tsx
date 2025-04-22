@@ -1,7 +1,7 @@
 import { SearchField } from "@amsterdam/design-system-react";
 import React, { useEffect, useState } from "react";
-import { useMapInstance as useMapMS } from "./MultiSelectContext";
-import { useMapInstance as useMapPQ } from "./PointQueryContext";
+import { useMapInstance as useMapMS } from "./MultiSelect/MultiSelectContext";
+import { useMapInstance as useMapPQ } from "./PointQuery/PointQueryContext";
 import styles from "../styles/search.module.css";
 import { useLocation } from "react-router-dom";
 

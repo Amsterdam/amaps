@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, type FunctionComponent } from "react";
 import { Button } from "@amsterdam/design-system-react";
-import "../styles/styles.module.css";
+import "../../styles/styles.module.css";
 import { pointQueryChain } from "~/utils/pointQuery";
 import { useMapInstance } from "./MultiSelectContext";
 import { getFeatureCenter } from "~/utils/getFeatureCenter";

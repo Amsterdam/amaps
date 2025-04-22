@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import MultiSelect from "./components/MultiSelect";
-import PointQuery from "./components/PointQuery";
+import MultiSelect from "./components/MultiSelect/Multiselect";
+import PointQuery from "./components/PointQuery/PointQuery";
 
 export default function Root() {
   return (

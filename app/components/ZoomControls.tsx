@@ -3,8 +3,8 @@ import {
   EnlargeIcon,
   MinimiseIcon,
 } from "@amsterdam/design-system-react-icons";
-import { useMapInstance as useMapMS } from "./MultiSelectContext";
-import { useMapInstance as useMapPQ } from "./PointQueryContext";
+import { useMapInstance as useMapMS } from "./MultiSelect/MultiSelectContext";
+import { useMapInstance as useMapPQ } from "./PointQuery/PointQueryContext";
 import styles from "../styles/controls.module.css";
 import { useLocation } from "react-router";
 

@@ -106,7 +106,7 @@ export async function pointQueryChain(
       openbare_ruimte: res._links.ligtAanOpenbareruimte.title,
       huisnummer: res.huisnummer,
       huisletter: res.huisletter || "",
-      huisnummer_toevoeging: res.huisnummer_toevoeging || "",
+      huisnummer_toevoeging: res.huisnummertoevoeging || "",
       postcode: res.postcode,
       woonplaats: res._links.ligtInWoonplaats.title,
     };

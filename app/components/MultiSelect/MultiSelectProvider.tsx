@@ -2,7 +2,7 @@ import type { FunctionComponent, PropsWithChildren } from "react";
 import { useState } from "react";
 import { LatLngTuple } from "leaflet";
 import { MapContext } from "./MultiSelectContext";
-import type { GeoJSONFeature } from "../types/types";
+import type { GeoJSONFeature } from "../../types/types";
 
 const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
