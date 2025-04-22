@@ -5,4 +5,9 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   plugins: [tailwindcss(), tsconfigPaths()],
   root: "./app",
+  server: {
+    watch: {
+      usePolling: true,
+    },
+  },
 });
