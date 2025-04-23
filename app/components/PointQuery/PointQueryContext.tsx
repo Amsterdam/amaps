@@ -8,7 +8,7 @@ import {
 } from "react";
 import type { LatLngTuple, Map } from "leaflet";
 
-type PointQueryResult = JSON;
+type PointQueryResult = any;
 
 export interface PointQueryContextType {
   mapInstance: Map | null;
