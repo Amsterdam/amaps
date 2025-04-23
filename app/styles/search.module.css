@@ -5,6 +5,7 @@
   max-height: 50px;
   z-index: 401;
   transform: scale(0.9);
+  font-family: var(--ams-font-family-base, sans-serif);
 }
 
 .dropdown {
