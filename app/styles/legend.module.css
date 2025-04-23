@@ -1,0 +1,60 @@
+.legendBox {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: white;
+  width: 400px;
+  z-index: 401;
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.95);
+  font-family: var(--ams-font-family-base, sans-serif);
+  border: 1px solid #ccc;
+}
+
+.legendBox label:hover {
+  text-decoration: none;
+}
+
+.toggleButtonWrapper {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-end;
+  background: white;
+}
+
+.legendContent {
+  overflow-y: auto;
+  max-height: 360px;
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.legendRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.25rem 5px;
+  box-sizing: border-box;
+}
+
+.colorSquare {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  transform: scale(1.5);
+  border: 1px solid #ccc;
+}
+
+.labelText {
+  flex: 1;
+  padding-left: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

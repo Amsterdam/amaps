@@ -9,6 +9,9 @@ const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const [position, setPosition] = useState<LatLngTuple>([52.36036, 4.89956]);
   const [markerData, setMarkerData] = useState<GeoJSONFeature[]>([]);
   const [selectedMarkers, setSelectedMarkers] = useState<string[]>([]);
+  const [selectedParkingTypes, setSelectedParkingTypes] = useState<string[]>(
+    []
+  );
 
   return (
     <MapContext.Provider
@@ -21,6 +24,8 @@ const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
         setMarkerData,
         selectedMarkers,
         setSelectedMarkers,
+        selectedParkingTypes,
+        setSelectedParkingTypes,
       }}
     >
       {children}

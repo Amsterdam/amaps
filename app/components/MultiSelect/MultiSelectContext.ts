@@ -7,6 +7,7 @@ export interface MapState {
   position: LatLngTuple;
   markerData: GeoJSONFeature[];
   selectedMarkers: string[];
+  selectedParkingTypes: string[];
 }
 
 type Action<T extends keyof MapState> = Dispatch<SetStateAction<MapState[T]>>;
@@ -16,6 +17,7 @@ export interface MapContextProps extends MapState {
   setPosition: Action<"position">;
   setMarkerData: Action<"markerData">;
   setSelectedMarkers: Action<"selectedMarkers">;
+  setSelectedParkingTypes: Action<"selectedParkingTypes">;
 }
 
 export const MapContext = createContext<MapContextProps | null>(null);

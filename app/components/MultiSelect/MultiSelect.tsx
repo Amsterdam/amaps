@@ -5,6 +5,7 @@ import MultiSelectResult from "./MultiSelectResult";
 import styles from "../../styles/main.module.css";
 import Controls from "../ZoomControls";
 import AddressSearch from "../AddressSearch";
+import Legend from "./Legend";
 
 const MultiSelect: FunctionComponent = () => (
   <MapProvider>
@@ -13,6 +14,7 @@ const MultiSelect: FunctionComponent = () => (
         <Map />
         <Controls />
         <AddressSearch />
+        <Legend />
       </div>
       <div className={styles.resultWrapper}>
         <MultiSelectResult />

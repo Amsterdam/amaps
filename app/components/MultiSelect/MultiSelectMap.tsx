@@ -23,6 +23,7 @@ const Map: FunctionComponent = () => {
     setMarkerData,
     selectedMarkers,
     setSelectedMarkers,
+    selectedParkingTypes,
   } = useMapInstance();
 
   const onMarkerClick = useCallback(
@@ -129,7 +130,16 @@ const Map: FunctionComponent = () => {
           const geo = await res.json();
           setMarkerData((prev) => {
             const fetched = geo.features;
-            const fetchedIds = new Set(fetched.map((f) => f.properties.id));
+            const filteredFetched =
+              selectedParkingTypes.length > 0
+                ? fetched.filter((f) =>
+                    selectedParkingTypes.includes(f.properties.e_type)
+                  )
+                : fetched;
+
+            const fetchedIds = new Set(
+              filteredFetched.map((f) => f.properties.id)
+            );
 
             // Include markers that are selected but not in the current query result
             const preservedSelected = prev.filter(
@@ -137,7 +147,7 @@ const Map: FunctionComponent = () => {
                 selectedMarkers.includes(f.properties.id) &&
                 !fetchedIds.has(f.properties.id)
             );
-            return [...fetched, ...preservedSelected];
+            return [...filteredFetched, ...preservedSelected];
           });
         } catch (e) {
           console.error("Failed ot fetch parking data: ", e);
@@ -162,7 +172,7 @@ const Map: FunctionComponent = () => {
     return () => {
       mapInstance.off("moveend", handleMoveEnd);
     };
-  }, [mapInstance, selectedMarkers]);
+  }, [mapInstance, selectedMarkers, selectedParkingTypes]);
 
   // Add the markers
   useEffect(() => {
