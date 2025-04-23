@@ -7,6 +7,7 @@ import getCrsRd from "../../utils/getCrsRd";
 import styles from "../../styles/map.module.css";
 import { useMapInstance } from "./MultiSelectContext";
 import type { MultiMarkerSelectExampleLayer } from "../../types/types";
+import { parkingTypes } from "~/types/parkingTypes";
 
 const Map: FunctionComponent = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -44,21 +45,24 @@ const Map: FunctionComponent = () => {
 
   const onMouseOver = useCallback((e: LeafletMouseEvent) => {
     (e.target as Polygon).setStyle({
-      fillColor: "#ffff00",
+      fillColor: "#008000",
       fillOpacity: 0.8,
     });
   }, []);
 
   const onMouseOut = useCallback(
     (e: LeafletMouseEvent) => {
-      const layerId = (e.target as MultiMarkerSelectExampleLayer).feature
-        ?.properties.id;
+      const polygon = e.target as Polygon;
+      const properties = polygon.feature?.properties;
+      const layerId = properties?.id;
+      const parkingType = properties?.e_type;
+      const color = parkingTypes[parkingType]?.color || "#3388ff";
 
       if (layerId && !selectedMarkers.includes(layerId)) {
         (e.target as Polygon).setStyle({
-          fillColor: "#3388ff",
-          fillOpacity: 0.2,
-          color: "#3388ff",
+          fillColor: color,
+          fillOpacity: 0.1,
+          color: color,
         });
       }
     },
@@ -167,8 +171,15 @@ const Map: FunctionComponent = () => {
     }
 
     const layerGroup = L.geoJson(markerData, {
-      style: {
-        opacity: 0.5,
+      style: (feature) => {
+        const parkingType = feature.properties.e_type;
+        const color = parkingTypes[parkingType]?.color || "#3388ff";
+
+        return {
+          fillColor: color,
+          color: color,
+          fillOpacity: 0.1,
+        };
       },
       onEachFeature: function (_feature, layer) {
         layer.on("mouseover", onMouseOver);
@@ -206,7 +217,7 @@ const Map: FunctionComponent = () => {
       if (selectedPolygons) {
         selectedPolygons.forEach((selectedPolygon) => {
           selectedPolygon.setStyle({
-            fillColor: "#ffff00",
+            fillColor: "#008000",
             fillOpacity: 1,
             opacity: 1,
           });
