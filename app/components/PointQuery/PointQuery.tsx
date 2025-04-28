@@ -11,8 +11,8 @@ const MultiSelect: FunctionComponent = () => (
     <div className={styles.container}>
       <div className={styles.mapWrapper}>
         <PointQueryMap />
-        <Controls />
-        <AddressSearch />
+        <Controls multiselect={false} />
+        <AddressSearch multiselect={false} />
       </div>
       <div className={styles.resultWrapper}>
         <PointQueryResult />

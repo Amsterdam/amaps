@@ -6,12 +6,9 @@ import {
 import { useMapInstance as useMapMS } from "./MultiSelect/MultiSelectContext";
 import { useMapInstance as useMapPQ } from "./PointQuery/PointQueryContext";
 import styles from "../styles/controls.module.css";
-import { useLocation } from "react-router";
 
-const Controls = () => {
-  const { mapInstance } = useLocation().pathname.includes("multiselect")
-    ? useMapMS()
-    : useMapPQ();
+const Controls = ({ multiselect }: { multiselect: boolean }) => {
+  const { mapInstance } = multiselect ? useMapMS() : useMapPQ();
 
   const handleZoomInClick = () => {
     if (mapInstance) {

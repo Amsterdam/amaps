@@ -4,7 +4,6 @@ import { useMapInstance as useMapMS } from "./MultiSelect/MultiSelectContext";
 import { useMapInstance as useMapPQ } from "./PointQuery/PointQueryContext";
 import { usePointQuery } from "./PointQuery/PointQueryContext";
 import styles from "../styles/search.module.css";
-import { useLocation } from "react-router-dom";
 import { constructAddress } from "~/utils/constructAddress";
 
 interface Suggestion {
@@ -12,12 +11,10 @@ interface Suggestion {
   label: string;
 }
 
-const AddressSearch = () => {
+const AddressSearch = ({ multiselect }: { multiselect: boolean }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
-  const { mapInstance } = useLocation().pathname.includes("multiselect")
-    ? useMapMS()
-    : useMapPQ();
+  const { mapInstance } = multiselect ? useMapMS() : useMapPQ();
   const pqContext = usePointQuery();
 
   useEffect(() => {
@@ -89,7 +86,7 @@ const AddressSearch = () => {
             }
           }}
         />
-        <SearchField.Button />
+        <SearchField.Button onClick={() => handleSubmit()} />
       </SearchField>
       {suggestions.length > 0 && (
         <ul className={styles.dropdown}>
