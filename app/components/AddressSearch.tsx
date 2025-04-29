@@ -91,7 +91,7 @@ const AddressSearch = ({ multiselect }: { multiselect: boolean }) => {
       {suggestions.length > 0 && (
         <ul className={styles.dropdown}>
           {suggestions.map((s) => (
-            <li key={s.id} onClick={() => handleSelect(s.id, s.label)}>
+            s.label.length > searchTerm.length && <li key={s.id} onClick={() => handleSelect(s.id, s.label)}>
               {s.label}
             </li>
           ))}
