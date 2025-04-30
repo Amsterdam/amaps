@@ -31,16 +31,16 @@ const Legend: FunctionComponent = () => {
   };
 
   return (
-    <div className={styles.legendBox}>
+    <div className={`${styles.legendBox} ${collapsed ? styles.collapsed : ''}`}>
       <div className={styles.toggleButtonWrapper}>
         <Button
           variant="tertiary"
           icon={collapsed ? <ChevronDownIcon /> : <ChevronUpIcon />}
           onClick={toggleCollapse}
           aria-expanded={!collapsed}
-          style={{ width: "100%" }}
+          className={styles.toggleButton}
         >
-          {collapsed ? "Toon legenda" : "Verberg legenda"}
+          {collapsed ? "Legenda" : "Verberg legenda"}
         </Button>
       </div>
 
