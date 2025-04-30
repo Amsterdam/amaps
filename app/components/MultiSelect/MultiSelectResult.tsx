@@ -6,7 +6,8 @@ import { useMapInstance } from "./MultiSelectContext";
 import { getFeatureCenter } from "~/utils/getFeatureCenter";
 
 const MultiSelectResult: FunctionComponent = () => {
-  const { selectedMarkers, setSelectedMarkers, markerData } = useMapInstance();
+  const { selectedMarkers, setSelectedMarkers, markerData, emitter, embedded } =
+    useMapInstance();
   const [results, setResults] = useState<any[]>([]);
 
   const selectedFeatures = useMemo(() => {
@@ -35,16 +36,25 @@ const MultiSelectResult: FunctionComponent = () => {
           allDetails.push(featureDetails);
         }
       }
-      console.log(allDetails);
+      if (emitter) {
+        emitter.emit("feature", { features: allDetails, type: "updated" });
+      }
       setResults(allDetails);
     };
 
     if (selectedFeatures.length) {
       loadDetails();
     } else {
+      if (emitter) {
+        emitter.emit("feature", { features: [], type: "empty" });
+      }
       setResults([]);
     }
   }, [selectedFeatures]);
+
+  if (embedded) {
+    return null;
+  }
 
   if (!selectedFeatures.length) {
     return (

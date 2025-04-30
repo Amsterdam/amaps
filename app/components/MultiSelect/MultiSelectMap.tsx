@@ -8,8 +8,9 @@ import styles from "../../styles/map.module.css";
 import { useMapInstance } from "./MultiSelectContext";
 import type { MultiMarkerSelectExampleLayer } from "../../types/types";
 import { parkingTypes } from "~/types/parkingTypes";
+import type { MultiSelectProps } from "~/types/embeddedTypes"
 
-const Map: FunctionComponent = () => {
+const Map: FunctionComponent<MultiSelectProps> = ({zoom = 13, center}) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const createdMapInstance = useRef(false);
   const [featureLayer, setFeatureLayer] = useState<LayerGroup | null>(null);
@@ -76,8 +77,8 @@ const Map: FunctionComponent = () => {
     }
 
     const map = new L.Map(containerRef.current, {
-      center: L.latLng(position),
-      zoom: 13,
+      center: center ? L.latlng(center.latitude, center,longitude) : L.latLng(position),
+      zoom: zoom ?? 13,
       layers: [
         L.tileLayer("https://{s}.data.amsterdam.nl/topo_rd/{z}/{x}/{y}.png", {
           attribution: "",
@@ -236,7 +237,8 @@ const Map: FunctionComponent = () => {
     }
   }, [selectedMarkers, featureLayer]);
 
-  return <div className={styles.container} ref={containerRef} />;
+  return <div className={styles.container} ref={containerRef}>
+    </div>;
 };
 
 export default Map;
