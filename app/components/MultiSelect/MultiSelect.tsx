@@ -1,4 +1,5 @@
 import type { FunctionComponent } from "react";
+import Counter from "./Counter";
 import Map from "./MultiSelectMap";
 import MapProvider from "./MultiSelectProvider";
 import MultiSelectResult from "./MultiSelectResult";
@@ -16,6 +17,7 @@ const MultiSelect: FunctionComponent<MultiSelectProps> = (props) => (
         <Controls multiselect={true} />
         <AddressSearch multiselect={true} />
         <Legend />
+        <Counter />
       </div>
       <div
         className={styles.resultWrapper}
