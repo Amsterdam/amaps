@@ -8,7 +8,8 @@
   z-index: 401;
   display: flex;
   flex-direction: column;
-  font-family: var(--ams-font-family-base, sans-serif);
+  font-family: "Amsterdam Sans", sans-serif;
+  font-weight: 400;
   border: 1px solid #ccc;
 }
 
@@ -41,10 +42,11 @@
 .legendContent {
   overflow-y: auto;
   max-height: 360px;
-  padding: 0.5rem 1rem;
+  padding: 0rem 1rem 0.5rem 1rem;
+  margin: 0px 0px 8px 0px;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  border-top: 1px black solid;
 }
 
 .legendRow {
@@ -54,6 +56,7 @@
   width: 100%;
   padding: 0.25rem 5px;
   box-sizing: border-box;
+  border-bottom: 1px solid black;
 }
 
 .colorSquare {
@@ -62,6 +65,7 @@
   height: 1em;
   transform: scale(1.5);
   border: 1px solid #ccc;
+  margin: 0px 5px 0px 0px;
 }
 
 .labelText {
