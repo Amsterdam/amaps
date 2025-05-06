@@ -6,11 +6,10 @@ import "leaflet/dist/leaflet.css";
 import getCrsRd from "../../utils/getCrsRd";
 import styles from "../../styles/map.module.css";
 import { useMapInstance } from "./MultiSelectContext";
-import type { MultiMarkerSelectExampleLayer } from "../../types/types";
 import { parkingTypes } from "~/types/parkingTypes";
-import type { MultiSelectProps } from "~/types/embeddedTypes"
+import type { MultiSelectProps } from "~/types/embeddedTypes";
 
-const Map: FunctionComponent<MultiSelectProps> = ({zoom = 13, center}) => {
+const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const createdMapInstance = useRef(false);
   const [featureLayer, setFeatureLayer] = useState<LayerGroup | null>(null);
@@ -25,6 +24,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({zoom = 13, center}) => {
     selectedMarkers,
     setSelectedMarkers,
     selectedParkingTypes,
+    selectedSpots,
   } = useMapInstance();
 
   const onMarkerClick = useCallback(
@@ -75,9 +75,11 @@ const Map: FunctionComponent<MultiSelectProps> = ({zoom = 13, center}) => {
     if (containerRef.current === null || createdMapInstance.current !== false) {
       return;
     }
-
+    console.log(selectedSpots);
     const map = new L.Map(containerRef.current, {
-      center: center ? L.latlng(center.latitude, center,longitude) : L.latLng(position),
+      center: center
+        ? L.latlng(center.latitude, center, longitude)
+        : L.latLng(position),
       zoom: zoom ?? 13,
       layers: [
         L.tileLayer("https://{s}.data.amsterdam.nl/topo_rd/{z}/{x}/{y}.png", {
@@ -193,6 +195,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({zoom = 13, center}) => {
         };
       },
       onEachFeature: function (_feature, layer) {
+        //check if feature is reserveerbaar
         layer.on("mouseover", onMouseOver);
         layer.on("mouseout", onMouseOut);
         layer.on("click", onMarkerClick);
@@ -237,8 +240,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({zoom = 13, center}) => {
     }
   }, [selectedMarkers, featureLayer]);
 
-  return <div className={styles.container} ref={containerRef}>
-    </div>;
+  return <div className={styles.container} ref={containerRef}></div>;
 };
 
 export default Map;

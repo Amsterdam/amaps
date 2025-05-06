@@ -19,6 +19,7 @@ declare global {
         search?: boolean;
         center?: { longitude: number; latitude: number };
         zoom?: number;
+        selectedSpots?: number[];
       }) => void;
     };
   }
@@ -34,6 +35,7 @@ window.multiselect = {
       search = true,
       center = { latitude: 52.36036, longitude: 4.89956 },
       zoom = 16,
+      selectedSpots = [],
     } = options;
 
     const container = document.getElementById(target);
@@ -41,7 +43,7 @@ window.multiselect = {
       console.error(`Container "${target}" not found`);
       return;
     }
-
+    console.log(selectedSpots);
     const emitter = emitonoff({});
 
     const root = ReactDOM.createRoot(container);
@@ -54,6 +56,7 @@ window.multiselect = {
         search={search}
         center={center}
         zoom={zoom}
+        selectedSpots={selectedSpots}
         embedded={true}
       />
     );

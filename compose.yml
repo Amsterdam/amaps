@@ -8,14 +8,3 @@ services:
     image: ${REGISTRY:-localhost:5001}/${REPOSITORY:-opdrachten/amaps}:${VERSION:-latest}
     ports:
       - "3000:8080"
-
-  dev:
-    build:
-      context: .
-      target: base
-    volumes:
-      - ./src:/app/src
-      - ./public:/app/public
-    command: npm run dev
-    ports:
-      - "3000:3000"

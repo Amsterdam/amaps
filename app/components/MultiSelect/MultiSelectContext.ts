@@ -8,6 +8,7 @@ export interface MapState {
   markerData: GeoJSONFeature[];
   selectedMarkers: string[];
   selectedParkingTypes: string[];
+  selectedSpots: number[];
 }
 
 type Action<T extends keyof MapState> = Dispatch<SetStateAction<MapState[T]>>;
