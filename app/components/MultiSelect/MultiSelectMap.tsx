@@ -8,11 +8,13 @@ import styles from "../../styles/map.module.css";
 import { useMapInstance } from "./MultiSelectContext";
 import { parkingTypes } from "~/types/parkingTypes";
 import type { MultiSelectProps } from "~/types/embeddedTypes";
+import { fetchFeaturesById } from "~/utils/fetchFeaturesById";
 
 const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const createdMapInstance = useRef(false);
   const [featureLayer, setFeatureLayer] = useState<LayerGroup | null>(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   const {
     mapInstance,
@@ -40,6 +42,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
           ...selectedMarkers,
           e.sourceTarget.feature.properties.id,
         ]);
+        console.log(selectedMarkers);
       }
     },
     [featureLayer, selectedMarkers]
@@ -109,6 +112,19 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
       setPosition([map.getCenter().lat, map.getCenter().lng]);
     });
 
+    if (selectedSpots && selectedSpots.length > 0) {
+      fetchFeaturesById(selectedSpots).then((features) => {
+        if (features.length === 0) return;
+        setMarkerData(features);
+        setSelectedMarkers(features.map((f) => f.properties.id));
+
+        map.fitBounds(L.geoJSON(features).getBounds(), { padding: [10, 10] });
+        setMapLoaded(true);
+      });
+    } else {
+      setMapLoaded(true);
+    }
+
     // On component unmount, destroy the map and all related events
     return () => {
       if (mapInstance) mapInstance.remove();
@@ -117,7 +133,8 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
 
   // Add the markers
   useEffect(() => {
-    if (mapInstance === null) {
+    console.log("maplodadeDD" + mapLoaded);
+    if (mapInstance === null || !mapLoaded) {
       return;
     }
 
@@ -171,6 +188,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
     };
 
     mapInstance.on("moveend", handleMoveEnd);
+    console.log(markerData);
 
     return () => {
       mapInstance.off("moveend", handleMoveEnd);
