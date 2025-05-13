@@ -42,7 +42,6 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
           ...selectedMarkers,
           e.sourceTarget.feature.properties.id,
         ]);
-        console.log(selectedMarkers);
       }
     },
     [featureLayer, selectedMarkers]
@@ -133,7 +132,6 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
 
   // Add the markers
   useEffect(() => {
-    console.log("maplodadeDD" + mapLoaded);
     if (mapInstance === null || !mapLoaded) {
       return;
     }
@@ -188,7 +186,6 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
     };
 
     mapInstance.on("moveend", handleMoveEnd);
-    console.log(markerData);
 
     return () => {
       mapInstance.off("moveend", handleMoveEnd);

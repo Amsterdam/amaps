@@ -61,7 +61,7 @@ const AddressSearch = ({ multiselect }: { multiselect: boolean }) => {
     if (coordinates && mapInstance) {
       mapInstance.setZoom(14);
       const [lng, lat] = coordinates.match(/\d+\.\d*/g).map(Number);
-      mapInstance.panTo([lat, lng], 14);
+      mapInstance.flyTo([lat, lng], 14);
     }
   };
 
@@ -90,11 +90,14 @@ const AddressSearch = ({ multiselect }: { multiselect: boolean }) => {
       </SearchField>
       {suggestions.length > 0 && (
         <ul className={styles.dropdown}>
-          {suggestions.map((s) => (
-            s.label.length > searchTerm.length && <li key={s.id} onClick={() => handleSelect(s.id, s.label)}>
-              {s.label}
-            </li>
-          ))}
+          {suggestions.map(
+            (s) =>
+              s.label.length > searchTerm.length && (
+                <li key={s.id} onClick={() => handleSelect(s.id, s.label)}>
+                  {s.label}
+                </li>
+              )
+          )}
         </ul>
       )}
     </div>
