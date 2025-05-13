@@ -6,4 +6,8 @@ import path from "path";
 export default defineConfig({
   plugins: [tailwindcss(), tsconfigPaths()],
   root: path.join(__dirname, "app"),
+  test: {
+    globals: true,
+    environment: "jsdom",
+  }
 });

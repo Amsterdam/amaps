@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:23-alpine AS base
 WORKDIR /app
 COPY package.json package-lock.json tsconfig.json ./
 
@@ -14,6 +14,14 @@ COPY tsconfig.json ./
 #RUN echo "BEFOREBUILD" && ls -la /app && ls -la /app/public && ls -la /app/dist
 
 RUN npm run build
+
+FROM build AS test
+CMD ["npm", "run", "test"]
+
+FROM node:23-alpine AS upgrade
+USER root
+RUN npm install -g npm-check-updates
+CMD ["ncu", "-u", "--doctor", "--target latest"]
 
 
 

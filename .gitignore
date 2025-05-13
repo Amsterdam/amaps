@@ -5,3 +5,7 @@ parkeervakken
 # React Router
 /.react-router/
 /build/
+/app/coverage
+/app/dist*
+app/dist/index.html
+package-lock.json

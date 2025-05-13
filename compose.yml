@@ -8,3 +8,25 @@ services:
     image: ${REGISTRY:-localhost:5001}/${REPOSITORY:-opdrachten/amaps}:${VERSION:-latest}
     ports:
       - "3000:8080"
+  upgrade:
+    build:
+      context: .
+      target: upgrade
+    environment:
+      - TZ=Europe/Amsterdam
+    volumes:
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
+      - .:/app
+    working_dir: /app
+    command: ncu -u --doctor --target latest
+
+  test-unit:
+    build:
+      context: .
+      target: test
+    environment: 
+      - TZ=Europe/Amsterdam
+    volumes: 
+      - .:/app
+      - /app/node_modules

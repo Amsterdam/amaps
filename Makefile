@@ -20,3 +20,6 @@ bash:
 
 requirements:  ## Upgrade dependencies
 	$(run) upgrade $(ARGS)
+
+test:
+	$(run) test-unit
