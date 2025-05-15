@@ -9,5 +9,14 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-  }
+    coverage: {
+      exclude: [
+        "**/types/**",
+        "**dist**",
+        "**/main.tsx",
+        "**/root.tsx",
+        "**/EmbeddedMultiSelect.tsx",
+        ],
+      }
+    }
 });
