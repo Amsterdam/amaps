@@ -9,6 +9,7 @@ COPY app /app/src
 FROM base AS build
 WORKDIR /app
 COPY app ./app
+COPY public ./public
 COPY vite.config.* ./
 COPY tsconfig.json ./
 #RUN echo "BEFOREBUILD" && ls -la /app && ls -la /app/public && ls -la /app/dist
