@@ -8,4 +8,5 @@ export interface MultiSelectProps {
   zoom?: number;
   embedded?: boolean;
   selectedSpots?: number[];
+  reservedSpots?: number[];
 }

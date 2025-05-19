@@ -15,6 +15,7 @@ const MapProvider: FunctionComponent<PropsWithChildren<MultiSelectProps>> = ({
   search = true,
   embedded = false,
   selectedSpots = [],
+  reservedSpots = [],
 }) => {
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
   const [position, setPosition] = useState<LatLngTuple>([
@@ -46,6 +47,7 @@ const MapProvider: FunctionComponent<PropsWithChildren<MultiSelectProps>> = ({
         marker,
         search,
         selectedSpots,
+        reservedSpots,
         embedded,
       }}
     >

@@ -27,6 +27,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
     setSelectedMarkers,
     selectedParkingTypes,
     selectedSpots,
+    reservedSpots,
   } = useMapInstance();
 
   const onMarkerClick = useCallback(
@@ -67,6 +68,13 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
           fillColor: color,
           fillOpacity: 0.1,
           color: color,
+        });
+      } else if(layerId && selectedMarkers.includes(layerId)){
+        (e.target as Polygon).setStyle({
+          fillColor: "#008000",
+          fillOpacity: 1,
+          opacity: 1,
+          weight: 2,
         });
       }
     },
@@ -203,14 +211,29 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
         const parkingType = feature.properties.e_type;
         const color = parkingTypes[parkingType]?.color || "#3388ff";
 
+        // Check if the feature is in reservedSpots
+        if (reservedSpots.includes(Number(feature.properties.id))) { 
+          return {
+            fillColor: color,
+            color: "red",
+            fillOpacity: 0.3,
+            weight: 2,
+          };
+        }
+
         return {
           fillColor: color,
           color: color,
           fillOpacity: 0.1,
         };
       },
-      onEachFeature: function (_feature, layer) {
-        //check if feature is reserveerbaar
+      onEachFeature: function (feature, layer) {
+
+        if (reservedSpots.includes(Number(feature.properties.id))) {
+          return;
+        }
+
+        // Add interactivity for non-reserved spots
         layer.on("mouseover", onMouseOver);
         layer.on("mouseout", onMouseOut);
         layer.on("click", onMarkerClick);
@@ -249,6 +272,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
             fillColor: "#008000",
             fillOpacity: 1,
             opacity: 1,
+            weight: 2,
           });
         });
       }
