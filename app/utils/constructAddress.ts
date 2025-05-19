@@ -1,4 +1,8 @@
 export function constructAddress(addressData: any): string {
+  if (!addressData || addressData.length == 0) {
+    return 'Er kon geen adres gevonden worden';
+  }
+
   const straat = addressData.openbare_ruimte;
   const huisnummer = addressData.huisnummer;
   const huisnummerToevoeging = addressData.huisnummer_toevoeging

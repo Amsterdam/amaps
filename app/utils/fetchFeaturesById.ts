@@ -16,7 +16,7 @@ export async function fetchFeaturesById(ids: string[]) {
       ).then((res) => res.json())
     )
   );
-  console.log("CCCC" + res);
+
   const response = res
     .filter((vak) => vak.geometry)
     .map((vak) => ({
@@ -37,6 +37,6 @@ export async function fetchFeaturesById(ids: string[]) {
       },
     }));
 
-  console.log("response" + response);
+    
   return response;
 }
