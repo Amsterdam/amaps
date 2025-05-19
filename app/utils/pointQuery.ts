@@ -1,4 +1,5 @@
 import proj4 from "proj4";
+import { parkingTypes } from "~/types/parkingTypes";
 
 proj4.defs(
   "EPSG:28992",
@@ -95,7 +96,6 @@ export async function pointQueryChain(
   const queryResult = responseFormatter(bagQuery);
 
   const bagID = await getBagID(queryResult);
-  console.log(bagID);
   let dichtsbijzijnd_adres: BagAdres | null = null;
 
   if (queryResult) {
@@ -115,8 +115,6 @@ export async function pointQueryChain(
   const omgevingRes = await query<any>(
     `https://api.data.amsterdam.nl/geosearch/?datasets=gebieden%2Fstadsdelen%2Cgebieden%2Fbuurten%2Cgebieden%2Fwijken&_fields=code&lat=${xy.lat}&lon=${xy.lng}&radius=50`
   );
-
-  console.log(omgevingRes);
 
   const omgevingsinfo: OmgevingsInfo | null = omgevingRes
     ? {
@@ -141,10 +139,14 @@ export async function pointQueryChain(
       }
     : null;
 
+  const eTypeText = parkingTypes[feature.properties.e_type]?.label;
+  feature.properties.e_type_tekst = eTypeText;
+
+  console.log(feature);
   return {
     query: xy,
-    dichtsbijzijnd_adres,
     object: feature,
+    dichtsbijzijnd_adres,
     omgevingsinfo,
   };
 }

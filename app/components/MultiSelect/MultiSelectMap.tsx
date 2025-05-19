@@ -214,7 +214,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
         // Check if the feature is in reservedSpots
         if (reservedSpots.includes(Number(feature.properties.id))) { 
           return {
-            fillColor: color,
+            fillColor: "#eb4949",
             color: "red",
             fillOpacity: 0.3,
             weight: 2,
@@ -230,6 +230,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
       onEachFeature: function (feature, layer) {
 
         if (reservedSpots.includes(Number(feature.properties.id))) {
+          layer.options.interactive = false;
           return;
         }
 

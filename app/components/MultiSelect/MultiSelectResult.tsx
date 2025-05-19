@@ -30,8 +30,6 @@ const MultiSelectResult: FunctionComponent = () => {
           allDetails.push(existing);
         } else {
           const latlng = getFeatureCenter(feature);
-          console.log("aa");
-          console.log(feature);
           const featureDetails = await pointQueryChain({ latlng }, feature);
           allDetails.push(featureDetails);
         }
