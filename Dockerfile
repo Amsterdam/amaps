@@ -13,7 +13,7 @@ COPY vite.config.* ./
 COPY tsconfig.json ./
 #RUN echo "BEFOREBUILD" && ls -la /app && ls -la /app/public && ls -la /app/dist
 
-RUN npm run build
+RUN npm run build:all
 
 FROM build AS test
 CMD ["npm", "run", "test"]
