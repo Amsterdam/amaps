@@ -6,7 +6,7 @@ import styles from "../../styles/main.module.css";
 import Controls from "../ZoomControls";
 import AddressSearch from "../AddressSearch";
 
-const MultiSelect: FunctionComponent = () => (
+const PointQuery: FunctionComponent = () => (
   <PointQueryProvider>
     <div className={styles.container}>
       <div className={styles.mapWrapper}>
@@ -21,4 +21,4 @@ const MultiSelect: FunctionComponent = () => (
   </PointQueryProvider>
 );
 
-export default MultiSelect;
+export default PointQuery;
