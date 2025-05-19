@@ -59,10 +59,9 @@ const AddressSearch = ({ multiselect }: { multiselect: boolean }) => {
     const coordinates = data.response.docs[0]?.centroide_ll;
     console.log(coordinates);
     if (coordinates && mapInstance) {
-      mapInstance.setZoom(14);
       const [lng, lat] = coordinates.match(/\d+\.\d*/g).map(Number);
-      mapInstance.flyTo([lat, lng], 14);
-    }
+      mapInstance.setView([lat, lng], 14);
+        }
   };
 
   // If user presses enter or search, choose the first suggestion in the list.
