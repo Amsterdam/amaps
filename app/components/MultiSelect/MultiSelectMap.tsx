@@ -9,6 +9,7 @@ import { useMapInstance } from "./MultiSelectContext";
 import { parkingTypes } from "~/types/parkingTypes";
 import type { MultiSelectProps } from "~/types/embeddedTypes";
 import { fetchFeaturesById } from "~/utils/fetchFeaturesById";
+import { parkingColors } from "~/types/parkingColors";
 
 const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -49,7 +50,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
 
   const onMouseOver = useCallback((e: LeafletMouseEvent) => {
     (e.target as Polygon).setStyle({
-      fillColor: "#008000",
+      fillColor: "#b8b8b8",
       fillOpacity: 0.8,
     });
   }, []);
@@ -62,20 +63,20 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
       const parkingType = properties?.e_type;
       const isReservable = parkingTypes[parkingType]?.reservable;
 
-      const color = isReservable ? "#3388ff" : "#f47b7b";
-
       if (layerId && !selectedMarkers.includes(layerId)) {
-        (e.target as Polygon).setStyle({
-          fillColor: color,
-          fillOpacity: 0.1,
-          color: color,
-        });
-      } else if(layerId && selectedMarkers.includes(layerId)){
-        (e.target as Polygon).setStyle({
-          fillColor: "#008000",
+          polygon.setStyle({
+            fillColor: parkingColors[isReservable ? "reservable" : "nonReservable"].fillColor,
+            fillOpacity: 0.1,
+            color: parkingColors[isReservable ? "reservable" : "nonReservable"].borderColor,
+            weight: parkingColors[isReservable ? "reservable" : "nonReservable"].weight,
+          });
+      } else if (layerId && selectedMarkers.includes(layerId)) {
+        polygon.setStyle({
+          fillColor: parkingColors.selected.fillColor,
+          color: parkingColors.selected.borderColor,
           fillOpacity: 1,
           opacity: 1,
-          weight: 2,
+          weight: parkingColors.selected.weight,
         });
       }
     },
@@ -211,26 +212,35 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
         const parkingType = feature.properties.e_type;
         const isReservable = parkingTypes[parkingType]?.reservable;
 
-        const color = isReservable ? "#3388ff" : "#f47b7b";
-
         if (reservedSpots.includes(Number(feature.properties.id))) {
           return {
-            fillColor: "#d90404",
-            color: "#c20202",
+            fillColor: parkingColors.reedsGereserveerd.fillColor,
+            color: parkingColors.reedsGereserveerd.borderColor,
             fillOpacity: 0.3,
-            weight: 2,
+            weight: parkingColors.reedsGereserveerd.weight,
+          };
+        }
+
+        if (isReservable) {
+          return {
+            fillColor: parkingColors.reservable.fillColor,
+            color: parkingColors.reservable.borderColor,
+            fillOpacity: 0.1,
+            weight: parkingColors.reservable.weight,
           };
         }
 
         return {
-          fillColor: color,
-          color: color,
+          fillColor: parkingColors.nonReservable.fillColor,
+          color: parkingColors.nonReservable.borderColor,
           fillOpacity: 0.1,
+          weight: parkingColors.nonReservable.weight,
         };
       },
       onEachFeature: function (feature, layer) {
         const parkingType = feature.properties.e_type;
         const isReservable = parkingTypes[parkingType]?.reservable;
+
         if (reservedSpots.includes(Number(feature.properties.id)) || !isReservable) {
           layer.options.interactive = false;
           return;
@@ -272,11 +282,13 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
       if (selectedPolygons) {
         selectedPolygons.forEach((selectedPolygon) => {
           selectedPolygon.setStyle({
-            fillColor: "#008000",
+            fillColor: parkingColors.selected.fillColor,
+            color: parkingColors.selected.borderColor,
             fillOpacity: 1,
             opacity: 1,
-            weight: 2,
+            weight: parkingColors.selected.weight,
           });
+          selectedPolygon.bringToFront();
         });
       }
     }
