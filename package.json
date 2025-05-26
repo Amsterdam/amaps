@@ -3,9 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vite build --config vite.config.ts",
+    "build:web": "vite build --config vite.config.ts",
     "build:embed": "vite build --config vite.config.embed.ts",
-    "build:all": "npm run build:embed && npm run build && npm run merge:dist",
+    "build": "npm run build:embed && npm run build:web && npm run merge:dist",
     "merge:dist": "mkdir -p app/dist && cp -r app/dist-embed/* app/dist/ && cp -r public/* app/dist/",
     "dev": "vite",
     "test": "vitest run --coverage",
