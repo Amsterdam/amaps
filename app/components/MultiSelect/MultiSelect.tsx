@@ -16,7 +16,7 @@ const MultiSelect: FunctionComponent<MultiSelectProps> = (props) => (
         <Map />
         <Controls multiselect={true} />
         <AddressSearch multiselect={true} />
-        <Legend />
+        <Legend reservedSpots={props.reservedSpots} />
         <Counter />
       </div>
       <div

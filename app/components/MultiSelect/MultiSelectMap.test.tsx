@@ -29,7 +29,7 @@ describe("MultiMarkerSelect Map", () => {
           type: "Feature",
           properties: {
             id: "1",
-            e_type: "parking",
+            e_type: "",
           },
           geometry: {
             type: "Polygon",

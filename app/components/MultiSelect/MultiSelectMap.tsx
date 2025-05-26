@@ -25,7 +25,6 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
     setMarkerData,
     selectedMarkers,
     setSelectedMarkers,
-    selectedParkingTypes,
     selectedSpots,
     reservedSpots,
   } = useMapInstance();
@@ -61,7 +60,9 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
       const properties = polygon.feature?.properties;
       const layerId = properties?.id;
       const parkingType = properties?.e_type;
-      const color = parkingTypes[parkingType]?.color || "#3388ff";
+      const isReservable = parkingTypes[parkingType]?.reservable;
+
+      const color = isReservable ? "#3388ff" : "#f47b7b";
 
       if (layerId && !selectedMarkers.includes(layerId)) {
         (e.target as Polygon).setStyle({
@@ -85,7 +86,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
     if (containerRef.current === null || createdMapInstance.current !== false) {
       return;
     }
-    console.log(selectedSpots);
+
     const map = new L.Map(containerRef.current, {
       center: center
         ? L.latlng(center.latitude, center, longitude)
@@ -115,7 +116,6 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
     setMapInstance(map);
 
     map.on("moveend", () => {
-      // setDisplayAlert(true);
       setPosition([map.getCenter().lat, map.getCenter().lng]);
     });
 
@@ -156,12 +156,12 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
           const geo = await res.json();
           setMarkerData((prev) => {
             const fetched = geo.features;
-            const filteredFetched =
-              selectedParkingTypes.length > 0
-                ? fetched.filter((f) =>
-                    selectedParkingTypes.includes(f.properties.e_type)
-                  )
-                : fetched;
+
+            // Filter based on reservable status
+            const filteredFetched = fetched.filter((f) => {
+              const parkingType = f.properties.e_type;
+              return parkingTypes[parkingType]?.reservable !== undefined;
+            });
 
             const fetchedIds = new Set(
               filteredFetched.map((f) => f.properties.id)
@@ -198,7 +198,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
     return () => {
       mapInstance.off("moveend", handleMoveEnd);
     };
-  }, [mapInstance, selectedMarkers, selectedParkingTypes]);
+  }, [mapInstance, selectedMarkers]);
 
   // Add the markers
   useEffect(() => {
@@ -209,13 +209,14 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
     const layerGroup = L.geoJson(markerData, {
       style: (feature) => {
         const parkingType = feature.properties.e_type;
-        const color = parkingTypes[parkingType]?.color || "#3388ff";
+        const isReservable = parkingTypes[parkingType]?.reservable;
 
-        // Check if the feature is in reservedSpots
-        if (reservedSpots.includes(Number(feature.properties.id))) { 
+        const color = isReservable ? "#3388ff" : "#f47b7b";
+
+        if (reservedSpots.includes(Number(feature.properties.id))) {
           return {
-            fillColor: "#eb4949",
-            color: "red",
+            fillColor: "#d90404",
+            color: "#c20202",
             fillOpacity: 0.3,
             weight: 2,
           };
@@ -228,8 +229,9 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
         };
       },
       onEachFeature: function (feature, layer) {
-
-        if (reservedSpots.includes(Number(feature.properties.id))) {
+        const parkingType = feature.properties.e_type;
+        const isReservable = parkingTypes[parkingType]?.reservable;
+        if (reservedSpots.includes(Number(feature.properties.id)) || !isReservable) {
           layer.options.interactive = false;
           return;
         }

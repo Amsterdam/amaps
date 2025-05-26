@@ -9,7 +9,7 @@ describe("pointQueryChain", () => {
     const mockClick = {
       latlng: { lat: 52.370216, lng: 4.895168 },
     };
-    const mockFeature = { id: "feature-1" };
+    const mockFeature = { id: "feature-1", properties: {e_type: ""} };
 
     // Mock responses for the API calls
     const mockBagQueryResponse = {
