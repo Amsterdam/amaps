@@ -7,5 +7,5 @@ export const parkingTypes: Record<string, { label: string; reservable: boolean }
   E8: { label: "Specifieke voertuigcategorie", reservable: false },
   E9: { label: "Vergunninghouders", reservable: false },
   E10: { label: "Blauwe zone", reservable: true },
-  "": { label: "Zonder parkeertype", reservable: true },
+  "": { label: "", reservable: true },
 };
