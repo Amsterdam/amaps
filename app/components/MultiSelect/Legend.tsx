@@ -28,6 +28,16 @@ const Legend: FunctionComponent<LegendProps> = ({ reservedSpots }) => {
 
       {!collapsed && (
         <div className={styles.legendContent}>
+          <div className={styles.legendRow}>
+            <span className={styles.labelText}>Geselecteerd</span>
+            <span
+              className={styles.colorSquare}
+              style={{
+                backgroundColor: parkingColors.selected.fillColor,
+                border: `2px solid ${parkingColors.selected.borderColor}`,
+              }}
+            />
+          </div>
           {/* Reserveerbaar */}
           <div className={styles.legendRow}>
             <span className={styles.labelText}>Reserveerbaar</span>
