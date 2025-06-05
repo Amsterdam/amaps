@@ -139,10 +139,11 @@ export async function pointQueryChain(
       }
     : null;
 
-  const eTypeText = parkingTypes[feature.properties.e_type]?.label;
-  feature.properties.e_type_tekst = eTypeText;
+  if (feature) {
+    const eTypeText = parkingTypes[feature.properties.e_type]?.label;
+    feature.properties.e_type_tekst = eTypeText;
+  }
 
-  console.log(feature);
   return {
     query: xy,
     object: feature,
