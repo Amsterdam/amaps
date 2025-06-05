@@ -6,7 +6,7 @@ import { useMapInstance } from "./MultiSelectContext";
 import { getFeatureCenter } from "~/utils/getFeatureCenter";
 
 const MultiSelectResult: FunctionComponent = () => {
-  const { selectedMarkers, setSelectedMarkers, markerData, emitter, embedded } =
+  const { selectedMarkers, setSelectedMarkers, markerData, emitter, onFeatures, embedded } =
     useMapInstance();
   const [results, setResults] = useState<any[]>([]);
 
@@ -35,20 +35,22 @@ const MultiSelectResult: FunctionComponent = () => {
         }
       }
       console.log("checking");
-      console.log(emitter);
-      if (emitter) {
-        console.log("feature", { features: allDetails, type: "updated" });
-        console.log("emitting");
-        emitter.emit("feature", { features: allDetails, type: "updated" });
+      
+      if (onFeatures) {
+        console.log("check");
+        onFeatures(allDetails);
       }
+
+
       setResults(allDetails);
     };
 
     if (selectedFeatures.length) {
       loadDetails();
     } else {
-      if (emitter) {
-        emitter.emit("feature", { features: [], type: "empty" });
+      if (onFeatures) {
+        console.log("check2");
+        onFeatures([]);
       }
       setResults([]);
     }
