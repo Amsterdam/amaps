@@ -34,7 +34,11 @@ const MultiSelectResult: FunctionComponent = () => {
           allDetails.push(featureDetails);
         }
       }
+      console.log("checking");
+      console.log(emitter);
       if (emitter) {
+        console.log("feature", { features: allDetails, type: "updated" });
+        console.log("emitting");
         emitter.emit("feature", { features: allDetails, type: "updated" });
       }
       setResults(allDetails);
