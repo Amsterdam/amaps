@@ -3,7 +3,7 @@
   top: 1rem;
   right: 1rem;
   background: white;
-  width: 395px;
+  width: 250px;
   max-height: 62%;
   z-index: 401;
   display: flex;
@@ -36,7 +36,6 @@
   display: flex;
   justify-content: space-between;
   padding: 0.25rem 0.5rem;
-  font-size: 0.9rem;
 }
 
 .legendContent {

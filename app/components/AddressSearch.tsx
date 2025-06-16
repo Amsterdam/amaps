@@ -14,6 +14,7 @@ interface Suggestion {
 const AddressSearch = ({ multiselect }: { multiselect: boolean }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [displaySuggestions, setDisplaySuggestions] = useState(true);
   const { mapInstance } = multiselect ? useMapMS() : useMapPQ();
   const pqContext = usePointQuery();
 
@@ -29,6 +30,11 @@ const AddressSearch = ({ multiselect }: { multiselect: boolean }) => {
     const fetchSuggestions = async () => {
       if (searchTerm.length < 3) {
         setSuggestions([]);
+        return;
+      }
+      if (!displaySuggestions){
+        setSuggestions([]);
+        setDisplaySuggestions(true);
         return;
       }
       const res = await fetch(
@@ -49,19 +55,18 @@ const AddressSearch = ({ multiselect }: { multiselect: boolean }) => {
   }, [searchTerm]);
 
   const handleSelect = async (id: string, label: string) => {
+    setDisplaySuggestions(false);
     setSearchTerm(label);
 
     const res = await fetch(
       `https://api.pdok.nl/bzk/locatieserver/search/v3_1/lookup?fq=gemeentenaam:amsterdam&fq=type:adres&id=${id}`
     );
     const data = await res.json();
-    console.log(data);
     const coordinates = data.response.docs[0]?.centroide_ll;
-    console.log(coordinates);
     if (coordinates && mapInstance) {
       const [lng, lat] = coordinates.match(/\d+\.\d*/g).map(Number);
       mapInstance.setView([lat, lng], 14);
-        }
+    }
   };
 
   // If user presses enter or search, choose the first suggestion in the list.

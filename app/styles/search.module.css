@@ -1,7 +1,6 @@
 .searchWrapper {
   position: absolute;
   top: 1rem;
-  width: 30rem;
   max-height: 50px;
   z-index: 401;
   transform: scale(0.9);
