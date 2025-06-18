@@ -22,7 +22,7 @@ const Legend: FunctionComponent<LegendProps> = ({ reservedSpots }) => {
           aria-expanded={!collapsed}
           className={styles.toggleButton}
         >
-          Legenda
+          {collapsed ? "Legenda" : "Verberg legenda"}
         </Button>
       </div>
 

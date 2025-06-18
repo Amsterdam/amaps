@@ -65,7 +65,7 @@ const AddressSearch = ({ multiselect }: { multiselect: boolean }) => {
     const coordinates = data.response.docs[0]?.centroide_ll;
     if (coordinates && mapInstance) {
       const [lng, lat] = coordinates.match(/\d+\.\d*/g).map(Number);
-      mapInstance.setView([lat, lng], 14);
+      mapInstance.setView([lat, lng], 16);
     }
   };
 

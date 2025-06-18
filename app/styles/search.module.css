@@ -1,9 +1,10 @@
 .searchWrapper {
   position: absolute;
-  top: 1rem;
+  top: 0rem;
   max-height: 50px;
   z-index: 401;
-  transform: scale(0.9);
+  transform: scale(0.75);
+  transform-origin: top left;
   font-family: "Amsterdam Sans", sans-serif;
 }
 

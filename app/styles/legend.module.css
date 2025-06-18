@@ -1,9 +1,8 @@
 .legendBox {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 0rem;
+  right: 0rem;
   background: white;
-  width: 250px;
   max-height: 62%;
   z-index: 401;
   display: flex;
@@ -11,6 +10,8 @@
   font-family: "Amsterdam Sans", sans-serif;
   font-weight: 400;
   border: 1px solid #ccc;
+  transform: scale(0.75);
+  transform-origin: top right;
 }
 
 .collapsed {
@@ -54,6 +55,7 @@
   justify-content: space-between;
   width: 100%;
   padding: 0.6rem 5px;
+  font-size:16px;
   box-sizing: border-box;
   border-bottom: 1px solid black;
 }
