@@ -70,7 +70,7 @@ describe("pointQueryChain", () => {
 
     expect(result).toEqual({
       query: mockClick.latlng,
-      dichtsbijzijnd_adres: {
+      dichtstbijzijnd_adres: {
         openbare_ruimte: "Street A",
         huisnummer: 10,
         huisletter: "A",

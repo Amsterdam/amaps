@@ -20,7 +20,7 @@ const AddressSearch = ({ multiselect }: { multiselect: boolean }) => {
 
   useEffect(() => {
     if (pqContext && pqContext.result) {
-      const addressData = pqContext.result.dichtsbijzijnd_adres;
+      const addressData = pqContext.result.dichtstbijzijnd_adres;
       const fullAddress = constructAddress(addressData);
       setSearchTerm(fullAddress);
     }

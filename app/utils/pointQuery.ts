@@ -41,7 +41,7 @@ export interface OmgevingsInfo {
 
 export interface PointQueryResult {
   query: LatLng;
-  dichtsbijzijnd_adres: BagAdres | null;
+  dichtstbijzijnd_adres: BagAdres | null;
   omgevingsinfo: OmgevingsInfo | null;
   object: any;
 }
@@ -96,13 +96,13 @@ export async function pointQueryChain(
   const queryResult = responseFormatter(bagQuery);
 
   const bagID = await getBagID(queryResult);
-  let dichtsbijzijnd_adres: BagAdres | null = null;
+  let dichtstbijzijnd_adres: BagAdres | null = null;
 
   if (queryResult) {
     const nummeraanduidingUrl =
       "https://api.data.amsterdam.nl/v1/bag/nummeraanduidingen/";
     const res = await query<any>(nummeraanduidingUrl + bagID + "/?format=json");
-    dichtsbijzijnd_adres = {
+    dichtstbijzijnd_adres = {
       openbare_ruimte: res._links.ligtAanOpenbareruimte.title,
       huisnummer: res.huisnummer,
       huisletter: res.huisletter || "",
@@ -147,7 +147,7 @@ export async function pointQueryChain(
   return {
     query: xy,
     object: feature,
-    dichtsbijzijnd_adres,
+    dichtstbijzijnd_adres,
     omgevingsinfo,
   };
 }
