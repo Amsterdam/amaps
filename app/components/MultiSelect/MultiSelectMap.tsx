@@ -10,6 +10,7 @@ import { parkingTypes } from "~/types/parkingTypes";
 import type { MultiSelectProps } from "~/types/embeddedTypes";
 import { fetchFeaturesById } from "~/utils/fetchFeaturesById";
 import { parkingColors } from "~/types/parkingColors";
+import type { Feature } from "geojson";
 
 const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -90,7 +91,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
 
     const map = new L.Map(containerRef.current, {
       center: center
-        ? L.latlng(center.latitude, center, longitude)
+        ? L.latlng(center.latitude, center.longitude)
         : L.latLng(position),
       zoom: zoom ?? 13,
       layers: [
@@ -237,7 +238,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
           weight: parkingColors.nonReservable.weight,
         };
       },
-      onEachFeature: function (feature, layer) {
+      onEachFeature: function (feature: Feature, layer: L.Polygon) {
         const parkingType = feature.properties.e_type;
         const isReservable = parkingTypes[parkingType]?.reservable;
 

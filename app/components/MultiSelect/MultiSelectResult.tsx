@@ -18,38 +18,38 @@ const MultiSelectResult: FunctionComponent = () => {
 
   useEffect(() => {
     const loadDetails = async () => {
-      const allDetails: any[] = [];
+      try {
+        const allDetails: any[] = [];
 
-      for (const feature of selectedFeatures) {
-        const existing = results.find(
-          (r) => r.object?.properties?.id === feature.properties.id
-        );
+        for (const feature of selectedFeatures) {
+          const existing = results.find(
+            (r) => r.object?.properties?.id === feature.properties.id
+          );
 
-        // Don't query details we've already queried
-        if (existing) {
-          allDetails.push(existing);
-        } else {
-          const latlng = getFeatureCenter(feature);
-          const featureDetails = await pointQueryChain({ latlng }, feature);
-          allDetails.push(featureDetails);
+          // Don't query details we've already queried
+          if (existing) {
+            allDetails.push(existing);
+          } else {
+            const latlng = getFeatureCenter(feature);
+            const featureDetails = await pointQueryChain({ latlng }, feature);
+            allDetails.push(featureDetails);
+          }
         }
-      }
-      console.log("checking");
-      
-      if (onFeatures) {
-        console.log("check");
-        onFeatures(allDetails);
-      }
 
+        if (onFeatures) {
+          onFeatures(allDetails);
+        }
 
-      setResults(allDetails);
+        setResults(allDetails);
+      } catch (error) {
+        console.error("Er ging iets mis bij het inladen van informatie:", error);
+      }
     };
 
     if (selectedFeatures.length) {
       loadDetails();
     } else {
       if (onFeatures) {
-        console.log("check2");
         onFeatures([]);
       }
       setResults([]);
@@ -83,11 +83,13 @@ const MultiSelectResult: FunctionComponent = () => {
     <section>
       <div style={{ marginBottom: "1rem" }}>
         <h2 className="ams-heading ams-heading--4">Multiselect Example</h2>
+
         <p>
           In this example clicking on an object (parking spot) will add/remove
           that object from the selection. An API is queried using the current
-          sleection.
+          selection.
         </p>
+
         <p>
           <em> The API results will appear below.</em>
         </p>

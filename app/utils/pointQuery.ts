@@ -83,7 +83,7 @@ function findOmgevingFeature(features: any[], type: string): any | null {
 
 export async function pointQueryChain(
   click: ClickContext,
-  feature: any
+  feature?: any
 ): Promise<PointQueryResult> {
   const xy = click.latlng;
 
