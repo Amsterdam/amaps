@@ -210,6 +210,9 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
 
     const layerGroup = L.geoJson(markerData, {
       style: (feature) => {
+        if (!feature) {
+          return {};
+        }
         const parkingType = feature.properties.e_type;
         const isReservable = parkingTypes[parkingType]?.reservable;
 
@@ -220,23 +223,21 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
             fillOpacity: 0.8,
             weight: parkingColors.reedsGereserveerd.weight,
           };
-        }
-
-        if (isReservable) {
+        }else if (isReservable) {
           return {
             fillColor: parkingColors.reservable.fillColor,
             color: parkingColors.reservable.borderColor,
             fillOpacity: 0.1,
             weight: parkingColors.reservable.weight,
           };
+        }else{
+          return {
+            fillColor: parkingColors.nonReservable.fillColor,
+            color: parkingColors.nonReservable.borderColor,
+            fillOpacity: 0.1,
+            weight: parkingColors.nonReservable.weight,
+          };
         }
-
-        return {
-          fillColor: parkingColors.nonReservable.fillColor,
-          color: parkingColors.nonReservable.borderColor,
-          fillOpacity: 0.1,
-          weight: parkingColors.nonReservable.weight,
-        };
       },
       onEachFeature: function (feature: Feature, layer: L.Polygon) {
         const parkingType = feature.properties.e_type;

@@ -7,7 +7,6 @@ import type { MultiSelectProps } from "../../types/embeddedTypes";
 
 const MapProvider: FunctionComponent<PropsWithChildren<MultiSelectProps>> = ({
   children,
-  emitter,
   onFeatures,
   center = { latitude: 52.36036, longitude: 4.89956 },
   zoom = 16,
@@ -28,6 +27,7 @@ const MapProvider: FunctionComponent<PropsWithChildren<MultiSelectProps>> = ({
   const [selectedParkingTypes, setSelectedParkingTypes] = useState<string[]>(
     []
   );
+  const [results, setResults] = useState<any[]>([]);
 
   return (
     <MapContext.Provider
@@ -42,7 +42,8 @@ const MapProvider: FunctionComponent<PropsWithChildren<MultiSelectProps>> = ({
         setSelectedMarkers,
         selectedParkingTypes,
         setSelectedParkingTypes,
-        emitter,
+        results,
+        setResults,
         onFeatures,
         zoom,
         layer,

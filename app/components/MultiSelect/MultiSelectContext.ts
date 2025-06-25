@@ -20,6 +20,8 @@ export interface MapContextProps extends MapState {
   setMarkerData: Action<"markerData">;
   setSelectedMarkers: Action<"selectedMarkers">;
   setSelectedParkingTypes: Action<"selectedParkingTypes">;
+  results: any[];
+  setResults: Dispatch<SetStateAction<any[]>>;
 }
 
 export const MapContext = createContext<MapContextProps | null>(null);

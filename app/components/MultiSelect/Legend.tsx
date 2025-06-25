@@ -61,20 +61,6 @@ const Legend: FunctionComponent<LegendProps> = ({ reservedSpots }) => {
               }}
             />
           </div>
-
-          {/* Reeds gereserveerd */}
-          {reservedSpots && (
-            <div className={styles.legendRow}>
-              <span className={styles.labelText}>Reeds gereserveerd</span>
-              <span
-                className={styles.colorSquare}
-                style={{
-                  backgroundColor: parkingColors.reedsGereserveerd.fillColor,
-                  border: `2px solid ${parkingColors.reedsGereserveerd.borderColor}`,
-                }}
-              />
-            </div>
-          )}
         </div>
       )}
     </div>

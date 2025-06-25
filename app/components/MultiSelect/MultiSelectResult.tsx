@@ -6,9 +6,8 @@ import { useMapInstance } from "./MultiSelectContext";
 import { getFeatureCenter } from "~/utils/getFeatureCenter";
 
 const MultiSelectResult: FunctionComponent = () => {
-  const { selectedMarkers, setSelectedMarkers, markerData, emitter, onFeatures, embedded } =
+  const { selectedMarkers, setSelectedMarkers, markerData, onFeatures, embedded, results, setResults } =
     useMapInstance();
-  const [results, setResults] = useState<any[]>([]);
 
   const selectedFeatures = useMemo(() => {
     return markerData.filter((feature) =>
@@ -31,8 +30,10 @@ const MultiSelectResult: FunctionComponent = () => {
             allDetails.push(existing);
           } else {
             const latlng = getFeatureCenter(feature);
-            const featureDetails = await pointQueryChain({ latlng }, feature);
-            allDetails.push(featureDetails);
+            if (latlng){
+              const featureDetails = await pointQueryChain({ latlng }, feature);
+              allDetails.push(featureDetails);
+            }
           }
         }
 

@@ -37,17 +37,23 @@ const AddressSearch = ({ multiselect }: { multiselect: boolean }) => {
         setDisplaySuggestions(true);
         return;
       }
-      const res = await fetch(
-        `https://api.pdok.nl/bzk/locatieserver/search/v3_1/suggest?fq=gemeentenaam:amsterdam&fq=type:adres&q=${searchTerm}`
-      );
-      const json = await res.json();
-      const data = json.response.docs;
+      try {
+        const encodedSearchTerm = encodeURIComponent(searchTerm);
+        const res = await fetch(
+          `https://api.pdok.nl/bzk/locatieserver/search/v3_1/suggest?fq=gemeentenaam:amsterdam&fq=type:adres&q=${encodedSearchTerm}`
+        );
+        const json = await res.json();
+        const data = json.response.docs;
 
-      const adresses = data.map((doc: any) => ({
-        id: doc.id,
-        label: doc.weergavenaam,
-      }));
-      setSuggestions(adresses);
+        const addresses = data.map((doc: any) => ({
+          id: doc.id,
+          label: doc.weergavenaam,
+        }));
+        setSuggestions(addresses);
+      } catch (err) {
+        console.error("Error fetching suggestions:", err);
+        setSuggestions([]);
+      }
     };
 
     const debounce = setTimeout(fetchSuggestions, 500);

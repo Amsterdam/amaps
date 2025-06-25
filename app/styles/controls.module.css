@@ -6,6 +6,6 @@
   right: 0rem;
   /* This z-index value should ideally come from an application constant that is greater than the Leaflet top z-index */
   z-index: 400;
-  transform: scale(0.75);
+  transform: scale(0.60);
   transform-origin: bottom right;
 }

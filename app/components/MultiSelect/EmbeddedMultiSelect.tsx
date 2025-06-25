@@ -45,13 +45,10 @@ window.multiselect = {
       console.error(`Container "${target}" not found`);
       return;
     }
-    
-    const emitter = emitonoff({});
 
     const root = ReactDOM.createRoot(container);
     root.render(
       <MultiMarkerSelect
-        emitter={emitter}
         onFeatures={onFeatures}
         layer={layer}
         marker={marker}
@@ -65,15 +62,3 @@ window.multiselect = {
     );
   },
 };
-// multiselect.createMap({
-//   target: "mapdiv",
-//   onFeatures: writeQueryResults,
-//   layer: "standaard",
-//   marker: false,
-//   search: true,
-//   center: {
-//     longitude: 4.8199770970189189,
-//     latitude: 52.382003968630904,
-//   },
-//   zoom: 19,
-// });

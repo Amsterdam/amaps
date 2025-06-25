@@ -1,5 +1,14 @@
-export function constructAddress(addressData: any): string {
-  if (!addressData || addressData.length == 0) {
+type AddressData = {
+  openbare_ruimte: string;
+  huisnummer: string | number;
+  huisnummer_toevoeging?: string;
+  huisletter?: string;
+  postcode: string;
+  woonplaats: string;
+};
+
+export function constructAddress(addressData: AddressData | null | undefined): string {
+  if (!addressData) {
     return 'Er kon geen adres gevonden worden';
   }
 

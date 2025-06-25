@@ -25,11 +25,11 @@ const Controls = ({ multiselect }: { multiselect: boolean }) => {
     <div className={styles.buttons}>
       <Button variant="secondary" onClick={handleZoomInClick}>
         <span className="ams-visually-hidden">Zoom in</span>
-        <Icon svg={EnlargeIcon} size="level-5" />
+        <Icon svg={EnlargeIcon} size="large" />
       </Button>
       <Button variant="secondary" onClick={handleZoomOutClick}>
         <span className="ams-visually-hidden">Zoom out</span>
-        <Icon svg={MinimiseIcon} size="level-5" />
+        <Icon svg={MinimiseIcon} size="large" />
       </Button>
     </div>
   );
