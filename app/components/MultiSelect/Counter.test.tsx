@@ -16,7 +16,7 @@ describe("SelectedCount Component", () => {
     expect(container.firstChild).toBeDefined();
   });
 
-  it("displays the correct count of loaded selected markers", () => {
+  it("displays the correct count of selected markers", () => {
     render(<SelectedCount />);
     expect(
       screen.getByText(/Aantal geselecteerde parkeervakken: 3/i)
