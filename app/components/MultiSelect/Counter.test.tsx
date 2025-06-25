@@ -6,6 +6,7 @@ import SelectedCount from "./Counter";
 vi.mock("./MultiSelectContext.ts", () => ({
   useMapInstance: vi.fn(() => ({
     selectedMarkers: ["1234", "5678", "9012"], // Mock selected markers
+    results: [{ id: "1234" }, { id: "5678" }, { id: "9012" }], // Mock results
   })),
 }));
 
