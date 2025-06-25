@@ -6,6 +6,7 @@ import SelectedCount from "./Counter";
 vi.mock("./MultiSelectContext.ts", () => ({
   useMapInstance: vi.fn(() => ({
     selectedMarkers: ["1234", "5678", "9012"], // Mock selected markers
+    results: [{ id: "1234" }, { id: "5678" }, { id: "9012" }], // Mock results
   })),
 }));
 
@@ -15,7 +16,7 @@ describe("SelectedCount Component", () => {
     expect(container.firstChild).toBeDefined();
   });
 
-  it("displays the correct count of selected markers", () => {
+  it("displays the correct count of loaded selected markers", () => {
     render(<SelectedCount />);
     expect(
       screen.getByText(/Aantal geselecteerde parkeervakken: 3/i)
