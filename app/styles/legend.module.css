@@ -1,0 +1,78 @@
+.legendBox {
+  position: absolute;
+  top: 0rem;
+  right: 0rem;
+  background: white;
+  max-height: 62%;
+  z-index: 401;
+  display: flex;
+  flex-direction: column;
+  font-family: "Amsterdam Sans", sans-serif;
+  font-weight: 400;
+  border: 1px solid #ccc;
+  transform: scale(0.75);
+  transform-origin: top right;
+}
+
+.collapsed {
+  width: auto;
+  min-width: 120px;
+}
+
+.legendBox label:hover {
+  text-decoration: none;
+}
+
+.toggleButtonWrapper {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-end;
+  background: white;
+}
+
+.toggleButton {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0.5rem;
+}
+
+.legendContent {
+  overflow-y: auto;
+  max-height: 360px;
+  padding: 0rem 1rem 0.5rem 1rem;
+  margin: 0px 0px 8px 0px;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px black solid;
+}
+
+.legendRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.6rem 5px;
+  font-size:16px;
+  box-sizing: border-box;
+  border-bottom: 1px solid black;
+}
+
+.colorSquare {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  transform: scale(1.5);
+  border: 1px solid #ccc;
+  margin: 0px 5px 0px 0px;
+}
+
+.labelText {
+  flex: 1;
+  padding-left: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

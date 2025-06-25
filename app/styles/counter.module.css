@@ -1,0 +1,12 @@
+.counter {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  background-color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  z-index: 401;
+  font-weight: bold;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  font-family: "Amsterdam Sans", sans-serif;
+}

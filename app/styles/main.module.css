@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.mapWrapper {
+  flex: 2;
+  position: relative;
+}
+
+.resultWrapper {
+  flex: 1;
+  overflow: auto;
+  background: white;
+  border-top: 1px solid #ccc;
+  padding: 16px;
+}
