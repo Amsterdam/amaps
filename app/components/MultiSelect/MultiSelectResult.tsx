@@ -6,8 +6,15 @@ import { useMapInstance } from "./MultiSelectContext";
 import { getFeatureCenter } from "~/utils/getFeatureCenter";
 
 const MultiSelectResult: FunctionComponent = () => {
-  const { selectedMarkers, setSelectedMarkers, markerData, onFeatures, embedded, results, setResults } =
-    useMapInstance();
+  const {
+    selectedMarkers,
+    setSelectedMarkers,
+    markerData,
+    onFeatures,
+    embedded,
+    results,
+    setResults,
+  } = useMapInstance();
 
   const selectedFeatures = useMemo(() => {
     return markerData.filter((feature) =>
@@ -15,10 +22,23 @@ const MultiSelectResult: FunctionComponent = () => {
     );
   }, [selectedMarkers, markerData]);
 
+
+  const mapURL = useMemo(() => {
+    const baseUrl = `https://acc.amaps.amsterdam.nl/multiselect`;
+    const queryParams = new URLSearchParams();
+    if (selectedMarkers.length > 0) {
+      queryParams.set("selectedspots", selectedMarkers.join(","));
+    }
+    return `${baseUrl}?${queryParams.toString()}`;
+  }, [selectedMarkers]);
+
   useEffect(() => {
     const loadDetails = async () => {
       try {
         const allDetails: any[] = [];
+
+        // Add the MapURL as the first element
+        allDetails.push({ MapURL: mapURL });
 
         for (const feature of selectedFeatures) {
           const existing = results.find(
@@ -51,11 +71,11 @@ const MultiSelectResult: FunctionComponent = () => {
       loadDetails();
     } else {
       if (onFeatures) {
-        onFeatures([]);
+        onFeatures([{ MapURL: mapURL }]);
       }
-      setResults([]);
+      setResults([{ MapURL: mapURL }]);
     }
-  }, [selectedFeatures]);
+  }, [selectedFeatures, mapURL]);
 
   if (embedded) {
     return null;
