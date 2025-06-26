@@ -22,6 +22,7 @@ export interface MapContextProps extends MapState {
   setSelectedParkingTypes: Action<"selectedParkingTypes">;
   results: any[];
   setResults: Dispatch<SetStateAction<any[]>>;
+  isInteractionDisabled: boolean;
 }
 
 export const MapContext = createContext<MapContextProps | null>(null);

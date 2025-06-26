@@ -27,7 +27,7 @@ const MultiSelectResult: FunctionComponent = () => {
     const baseUrl = process.env.PUBLIC_BASE_URL || "https://amaps.amsterdam.nl";
     const queryParams = new URLSearchParams();
     if (selectedMarkers.length > 0) {
-      queryParams.set("selectedspots", selectedMarkers.join(","));
+      queryParams.set("selectedSpots", selectedMarkers.join(","));
     }
     return `${baseUrl}/multiselect?${queryParams.toString()}`;
   }, [selectedMarkers]);

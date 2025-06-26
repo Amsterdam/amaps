@@ -29,7 +29,7 @@ const MapProvider: FunctionComponent<PropsWithChildren<MultiSelectProps>> = ({
   );
   const [results, setResults] = useState<any[]>([]);
 
-// Helper function to parse query parameters from the URL
+  // Helper function to parse query parameters from the URL
   const getQueryParams = (): URLSearchParams => {
     if (typeof window !== "undefined") {
       return new URLSearchParams(window.location.search);
@@ -40,7 +40,7 @@ const MapProvider: FunctionComponent<PropsWithChildren<MultiSelectProps>> = ({
   const [initializedSelectedSpots] = useState(() => {
     if (!embedded) {
       const queryParams = getQueryParams();
-      const selectedSpotsFromUrl = queryParams.get("selectedspots");
+      const selectedSpotsFromUrl = queryParams.get("selectedSpots");
       if (selectedSpotsFromUrl) {
         const spotIds = selectedSpotsFromUrl.split(",").map(Number);
         return Array.from(new Set([...selectedSpots, ...spotIds])); // Merge with existing selectedSpots
@@ -48,6 +48,9 @@ const MapProvider: FunctionComponent<PropsWithChildren<MultiSelectProps>> = ({
     }
     return selectedSpots;
   });
+
+  const isInteractionDisabled = !!getQueryParams().get("selectedSpots");
+  console.log(isInteractionDisabled);
 
   return (
     <MapContext.Provider
@@ -72,6 +75,7 @@ const MapProvider: FunctionComponent<PropsWithChildren<MultiSelectProps>> = ({
         selectedSpots: initializedSelectedSpots,
         reservedSpots,
         embedded,
+        isInteractionDisabled,
       }}
     >
       {children}
