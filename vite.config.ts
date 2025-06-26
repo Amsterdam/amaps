@@ -16,7 +16,7 @@ export default defineConfig({
         "**/main.tsx",
         "**/root.tsx",
         "**/EmbeddedMultiSelect.tsx",
-      ],
-    },
-  },
+        ],
+      }
+    }
 });
