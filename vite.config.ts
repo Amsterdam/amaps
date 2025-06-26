@@ -2,9 +2,6 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 export default defineConfig({
   plugins: [tailwindcss(), tsconfigPaths()],
@@ -23,6 +20,7 @@ export default defineConfig({
     },
   },
   define: {
+    // Use process.env directly to access the container's environment variable
     "process.env.PUBLIC_BASE_URL": JSON.stringify(process.env.VITE_PUBLIC_BASE_URL || "https://amaps.amsterdam.nl"),
   },
 });
