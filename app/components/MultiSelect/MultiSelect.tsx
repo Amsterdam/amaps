@@ -8,9 +8,17 @@ import Controls from "../ZoomControls";
 import AddressSearch from "../AddressSearch";
 import Legend from "./Legend";
 import type { MultiSelectProps } from "../../types/embeddedTypes";
+import { useMapInstance } from "./MultiSelectContext";
 
-const MultiSelect: FunctionComponent<MultiSelectProps> = (props) => (
-  <MapProvider {...props}>
+const MultiSelectInner: FunctionComponent<MultiSelectProps> = (props) => {
+  const { isInteractionDisabled } = useMapInstance();
+
+  const wrapperFlexStyle = {
+    flex: props.embedded || isInteractionDisabled ? 0 : 1,
+    padding: props.embedded || isInteractionDisabled ? 0 : 16,
+  };
+
+  return (
     <div className={styles.container}>
       <div className={styles.mapWrapper}>
         <Map />
@@ -19,16 +27,16 @@ const MultiSelect: FunctionComponent<MultiSelectProps> = (props) => (
         <Legend reservedSpots={props.reservedSpots} />
         <Counter />
       </div>
-      <div
-        className={styles.resultWrapper}
-        style={{
-          flex: props.embedded ? 0 : 1,
-          padding: props.embedded ? 0 : 16,
-        }}
-      >
+      <div className={styles.resultWrapper} style={wrapperFlexStyle}>
         <MultiSelectResult />
       </div>
     </div>
+  );
+};
+
+const MultiSelect: FunctionComponent<MultiSelectProps> = (props) => (
+  <MapProvider {...props}>
+    <MultiSelectInner {...props} />
   </MapProvider>
 );
 

@@ -14,6 +14,7 @@ const MultiSelectResult: FunctionComponent = () => {
     embedded,
     results,
     setResults,
+    isInteractionDisabled,
   } = useMapInstance();
 
   const selectedFeatures = useMemo(() => {
@@ -77,7 +78,7 @@ const MultiSelectResult: FunctionComponent = () => {
     }
   }, [selectedFeatures, mapURL]);
 
-  if (embedded) {
+  if (embedded || isInteractionDisabled) {
     return null;
   }
 
