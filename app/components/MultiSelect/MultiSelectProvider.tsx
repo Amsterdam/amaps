@@ -50,7 +50,6 @@ const MapProvider: FunctionComponent<PropsWithChildren<MultiSelectProps>> = ({
   });
 
   const isInteractionDisabled = !!getQueryParams().get("selectedSpots");
-  console.log(isInteractionDisabled);
 
   return (
     <MapContext.Provider
