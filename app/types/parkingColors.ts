@@ -7,12 +7,12 @@ export const parkingColors: Record<string, { fillColor: string; borderColor: str
   },
   reservable: {
     fillColor: "white",
-    borderColor: "#bed200",
+    borderColor: "#004699",
     weight: 2,
   },
   nonReservable: {
     fillColor: "white",
-    borderColor: "#ff9100",
+    borderColor: "#767676",
     weight: 2,
   },
   reedsGereserveerd: {
