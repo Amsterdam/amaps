@@ -6,8 +6,15 @@ import { useMapInstance } from "./MultiSelectContext";
 import { getFeatureCenter } from "~/utils/getFeatureCenter";
 
 const MultiSelectResult: FunctionComponent = () => {
-  const { selectedMarkers, setSelectedMarkers, markerData, onFeatures, embedded, results, setResults } =
-    useMapInstance();
+  const {
+    selectedMarkers,
+    setSelectedMarkers,
+    markerData,
+    onFeatures,
+    embedded,
+    results,
+    setResults,
+  } = useMapInstance();
 
   const selectedFeatures = useMemo(() => {
     return markerData.filter((feature) =>
@@ -15,10 +22,23 @@ const MultiSelectResult: FunctionComponent = () => {
     );
   }, [selectedMarkers, markerData]);
 
+
+  const mapURL = useMemo(() => {
+    const baseUrl = "https://amaps.amsterdam.nl";
+    const queryParams = new URLSearchParams();
+    if (selectedMarkers.length > 0) {
+      queryParams.set("selectedSpots", selectedMarkers.join(","));
+    }
+    return `${baseUrl}/multiselect?${queryParams.toString()}`;
+  }, [selectedMarkers]);
+
   useEffect(() => {
     const loadDetails = async () => {
       try {
         const allDetails: any[] = [];
+
+        // Add the MapURL as the first element
+        allDetails.push({ MapURL: mapURL });
 
         for (const feature of selectedFeatures) {
           const existing = results.find(
@@ -51,11 +71,11 @@ const MultiSelectResult: FunctionComponent = () => {
       loadDetails();
     } else {
       if (onFeatures) {
-        onFeatures([]);
+        onFeatures([{ MapURL: mapURL }]);
       }
-      setResults([]);
+      setResults([{ MapURL: mapURL }]);
     }
-  }, [selectedFeatures]);
+  }, [selectedFeatures, mapURL]);
 
   if (embedded) {
     return null;
@@ -98,7 +118,7 @@ const MultiSelectResult: FunctionComponent = () => {
       </div>
 
       <p>
-        <strong>Aantal geselecteerde features: </strong> {results.length}{" "}
+        <strong>Aantal geselecteerde features: </strong> {results.length - 1}{" "}
       </p>
 
       <pre>{JSON.stringify(results, null, 2)}</pre>

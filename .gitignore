@@ -10,3 +10,4 @@ parkeervakken
 app/dist/index.html
 package-lock.json
 app/testEmbedded.html
+.env

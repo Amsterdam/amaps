@@ -29,6 +29,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
     setSelectedMarkers,
     selectedSpots,
     reservedSpots,
+    isInteractionDisabled,
   } = useMapInstance();
 
   const onMarkerClick = useCallback(
@@ -242,8 +243,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
       onEachFeature: function (feature: Feature, layer: L.Polygon) {
         const parkingType = feature.properties.e_type;
         const isReservable = parkingTypes[parkingType]?.reservable;
-
-        if (reservedSpots.includes(Number(feature.properties.id)) || !isReservable) {
+        if (reservedSpots.includes(Number(feature.properties.id)) || !isReservable || isInteractionDisabled) {
           layer.options.interactive = false;
           return;
         }
