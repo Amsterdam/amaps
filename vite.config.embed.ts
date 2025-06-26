@@ -23,7 +23,6 @@ export default defineConfig({
   },
   define: {
     "process.env.NODE_ENV": JSON.stringify("production"),
-    "process.env.PUBLIC_BASE_URL": JSON.stringify(process.env.VITE_PUBLIC_BASE_URL || "https://amaps.amsterdam.nl/")
   },
   server: {
     watch: {

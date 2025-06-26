@@ -24,7 +24,7 @@ const MultiSelectResult: FunctionComponent = () => {
 
 
   const mapURL = useMemo(() => {
-    const baseUrl = process.env.PUBLIC_BASE_URL || "https://amaps.amsterdam.nl";
+    const baseUrl = "https://amaps.amsterdam.nl";
     const queryParams = new URLSearchParams();
     if (selectedMarkers.length > 0) {
       queryParams.set("selectedSpots", selectedMarkers.join(","));

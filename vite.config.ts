@@ -19,8 +19,4 @@ export default defineConfig({
       ],
     },
   },
-  define: {
-    // Use process.env directly to access the container's environment variable
-    "process.env.PUBLIC_BASE_URL": JSON.stringify(process.env.VITE_PUBLIC_BASE_URL || "https://amaps.amsterdam.nl"),
-  },
 });
