@@ -24,12 +24,12 @@ const MultiSelectResult: FunctionComponent = () => {
 
 
   const mapURL = useMemo(() => {
-    const baseUrl = `https://acc.amaps.amsterdam.nl/multiselect`;
+    const baseUrl = process.env.PUBLIC_BASE_URL || "https://amaps.amsterdam.nl";
     const queryParams = new URLSearchParams();
     if (selectedMarkers.length > 0) {
       queryParams.set("selectedspots", selectedMarkers.join(","));
     }
-    return `${baseUrl}?${queryParams.toString()}`;
+    return `${baseUrl}/multiselect?${queryParams.toString()}`;
   }, [selectedMarkers]);
 
   useEffect(() => {
@@ -118,7 +118,7 @@ const MultiSelectResult: FunctionComponent = () => {
       </div>
 
       <p>
-        <strong>Aantal geselecteerde features: </strong> {results.length}{" "}
+        <strong>Aantal geselecteerde features: </strong> {results.length - 1}{" "}
       </p>
 
       <pre>{JSON.stringify(results, null, 2)}</pre>

@@ -2,6 +2,9 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export default defineConfig({
   plugins: [tailwindcss(), tsconfigPaths()],
@@ -20,6 +23,7 @@ export default defineConfig({
   },
   define: {
     "process.env.NODE_ENV": JSON.stringify("production"),
+    "process.env.PUBLIC_BASE_URL": JSON.stringify(process.env.VITE_PUBLIC_BASE_URL || "https://amaps.amsterdam.nl/")
   },
   server: {
     watch: {
