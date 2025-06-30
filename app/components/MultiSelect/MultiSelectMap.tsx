@@ -235,7 +235,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
           return {
             fillColor: parkingColors.nonReservable.fillColor,
             color: parkingColors.nonReservable.borderColor,
-            fillOpacity: 0.1,
+            fillOpacity: 0.7,
             weight: parkingColors.nonReservable.weight,
           };
         }
