@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { FunctionComponent } from "react";
 import { formatWfsUrl } from "../../utils/formatWfs";
-import L, { LayerGroup, LeafletMouseEvent, Polygon } from "leaflet";
+import L, { LayerGroup, LeafletMouseEvent, marker, Polygon } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import getCrsRd from "../../utils/getCrsRd";
 import styles from "../../styles/map.module.css";
@@ -17,6 +17,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
   const createdMapInstance = useRef(false);
   const [featureLayer, setFeatureLayer] = useState<LayerGroup | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [idLayer, setIdLayer] = useState<LayerGroup | null>(null);
 
   const {
     mapInstance,
@@ -258,8 +259,41 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
     layerGroup.addTo(mapInstance);
     setFeatureLayer(layerGroup);
 
+    if (idLayer) {
+      idLayer.remove();
+    }
+
+    if (mapInstance.getZoom() >= 16) {
+      const labelGroup = L.layerGroup();
+      markerData.forEach((feature: Feature) => { 
+        const latlngs = feature.geometry.coordinates[0].map(coord => 
+          L.latLng(coord[1], coord[0])
+        );
+        const center = L.polygon(latlngs).getBounds().getCenter();
+
+        const id = feature.properties?.id;
+        const label = L.marker(center, {
+          icon: L.divIcon({
+            html: `<div class="label-text">${id}</div>`,
+            iconSize: [0,0],
+            iconAnchor: [0,0],
+          }),
+          interactive: false,
+        });
+
+        labelGroup.addLayer(label);
+      });
+
+      labelGroup.addTo(mapInstance);
+      setIdLayer(labelGroup);
+    }
+
     return () => {
       if (layerGroup) layerGroup.removeFrom(mapInstance);
+      if (idLayer) {
+        idLayer.removeFrom(mapInstance);
+        setIdLayer(null);
+      }
     };
   }, [mapInstance, selectedMarkers, markerData]);
 
