@@ -19,6 +19,10 @@
   min-width: 120px;
 }
 
+.expanded {
+  width: 250px;
+}
+
 .legendBox label:hover {
   text-decoration: none;
 }

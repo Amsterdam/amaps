@@ -4,16 +4,12 @@ import { Button } from "@amsterdam/design-system-react";
 import { ChevronDownIcon, ChevronUpIcon } from "@amsterdam/design-system-react-icons";
 import { parkingColors } from "~/types/parkingColors";
 
-interface LegendProps {
-  reservedSpots?: number[] | null;
-}
-
-const Legend: FunctionComponent<LegendProps> = ({ reservedSpots }) => {
+const Legend: FunctionComponent = () => {
   const [collapsed, setCollapsed] = useState(true);
   const toggleCollapse = () => setCollapsed((prev) => !prev);
 
   return (
-    <div className={`${styles.legendBox} ${collapsed ? styles.collapsed : ""}`}>
+    <div className={`${styles.legendBox} ${collapsed ? styles.collapsed : styles.expanded}`}>
       <div className={styles.toggleButtonWrapper}>
         <Button
           variant="tertiary"
@@ -22,7 +18,7 @@ const Legend: FunctionComponent<LegendProps> = ({ reservedSpots }) => {
           aria-expanded={!collapsed}
           className={styles.toggleButton}
         >
-          {collapsed ? "Legenda" : "Verberg legenda"}
+          Legenda
         </Button>
       </div>
 
