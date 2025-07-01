@@ -243,14 +243,14 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
             fillOpacity: 0.8,
             weight: parkingColors.reedsGereserveerd.weight,
           };
-        }else if (isReservable) {
+        } else if (isReservable) {
           return {
             fillColor: parkingColors.reservable.fillColor,
             color: parkingColors.reservable.borderColor,
             fillOpacity: 0.1,
             weight: parkingColors.reservable.weight,
           };
-        }else{
+        } else {
           return {
             fillPattern: pattern,
             fillColor: parkingColors.nonReservable.fillColor,
