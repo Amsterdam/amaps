@@ -265,10 +265,8 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
 
     if (mapInstance.getZoom() >= 16) {
       const labelGroup = L.layerGroup();
-
-      markerData.forEach(feature => {
-        const geometry = feature.geometry;
-        const latlngs = geometry.coordinates[0].map(coord => 
+      markerData.forEach((feature: Feature) => { 
+        const latlngs = feature.geometry.coordinates[0].map(coord => 
           L.latLng(coord[1], coord[0])
         );
         const center = L.polygon(latlngs).getBounds().getCenter();
