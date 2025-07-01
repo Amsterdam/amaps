@@ -80,3 +80,14 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.stripes {
+  background-image: repeating-linear-gradient(
+    0deg,
+    var(--stripe-color, transparent) 0,
+    var(--stripe-color, transparent) 1px,
+    var(--stripe-space-color, transparent) 2px,
+    var(--stripe-space-color, transparent) 6px
+  );
+  background-position-y: -1px;
+}

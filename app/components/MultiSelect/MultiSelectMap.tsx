@@ -3,6 +3,7 @@ import type { FunctionComponent } from "react";
 import { formatWfsUrl } from "../../utils/formatWfs";
 import L, { LayerGroup, LeafletMouseEvent, marker, Polygon } from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "leaflet.pattern";
 import getCrsRd from "../../utils/getCrsRd";
 import styles from "../../styles/map.module.css";
 import { useMapInstance } from "./MultiSelectContext";
@@ -15,8 +16,11 @@ import type { Feature } from "geojson";
 const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const createdMapInstance = useRef(false);
+  const mapRef = useRef<L.Map | null>(null);
   const [featureLayer, setFeatureLayer] = useState<LayerGroup | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
+
+  const [pattern, setPattern] = useState<any>(null);
   const [idLayer, setIdLayer] = useState<LayerGroup | null>(null);
 
   const {
@@ -87,7 +91,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
   );
 
   useEffect(() => {
-    if (containerRef.current === null || createdMapInstance.current !== false) {
+    if (containerRef.current === null || mapRef.current !== null) {
       return;
     }
 
@@ -117,7 +121,20 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
     map.attributionControl.setPrefix(false);
 
     createdMapInstance.current = true;
+    mapRef.current = map;
     setMapInstance(map);
+
+    const stripesPattern = new (L as any).StripePattern({
+      weight: 2,
+      spaceWeight: 9,
+      color: parkingColors.nonReservable.borderColor,
+      spaceColor: parkingColors.nonReservable.fillColor,
+      spaceOpacity: 1.0,
+      angle: 0,
+      opacity: 1.0,
+    })
+    stripesPattern.addTo(mapRef.current!)
+    setPattern(stripesPattern);
 
     map.on("moveend", () => {
       setPosition([map.getCenter().lat, map.getCenter().lng]);
@@ -138,7 +155,10 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
 
     // On component unmount, destroy the map and all related events
     return () => {
-      if (mapInstance) mapInstance.remove();
+     if (mapRef.current) {
+      mapRef.current.remove()
+      mapRef.current = null
+     }
     };
   }, []);
 
@@ -225,15 +245,16 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
             fillOpacity: 0.8,
             weight: parkingColors.reedsGereserveerd.weight,
           };
-        }else if (isReservable) {
+        } else if (isReservable) {
           return {
             fillColor: parkingColors.reservable.fillColor,
             color: parkingColors.reservable.borderColor,
             fillOpacity: 0.1,
             weight: parkingColors.reservable.weight,
           };
-        }else{
+        } else {
           return {
+            fillPattern: pattern,
             fillColor: parkingColors.nonReservable.fillColor,
             color: parkingColors.nonReservable.borderColor,
             fillOpacity: 0.7,

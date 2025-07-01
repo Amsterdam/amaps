@@ -50,11 +50,15 @@ const Legend: FunctionComponent = () => {
           <div className={styles.legendRow}>
             <span className={styles.labelText}>Niet reserveerbaar</span>
             <span
-              className={styles.colorSquare}
-              style={{
-                backgroundColor: parkingColors.nonReservable.fillColor,
-                border: `2px solid ${parkingColors.nonReservable.borderColor}`,
-              }}
+              className={`${styles.colorSquare} ${styles.stripes}`}
+              style={
+                {
+                  '--stripe-color': parkingColors.nonReservable.borderColor,
+                  '--stripe-space-color': parkingColors.nonReservable.fillColor,
+                  backgroundColor: parkingColors.nonReservable.fillColor,
+                  border: `2px solid ${parkingColors.nonReservable.borderColor}`,
+                } as React.CSSProperties
+              }
             />
           </div>
         </div>
