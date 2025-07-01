@@ -24,7 +24,7 @@ const MultiSelectInner: FunctionComponent<MultiSelectProps> = (props) => {
         <Map />
         <Controls multiselect={true} />
         <AddressSearch multiselect={true} />
-        <Legend reservedSpots={props.reservedSpots} />
+        <Legend />
         <Counter />
       </div>
       <div className={styles.resultWrapper} style={wrapperFlexStyle}>
