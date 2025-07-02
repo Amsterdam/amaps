@@ -16,6 +16,7 @@ const MapProvider: FunctionComponent<PropsWithChildren<MultiSelectProps>> = ({
   embedded = false,
   selectedSpots = [],
   reservedSpots = [],
+  allowAllSpots = false,
 }) => {
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
   const [position, setPosition] = useState<LatLngTuple>([
@@ -73,6 +74,7 @@ const MapProvider: FunctionComponent<PropsWithChildren<MultiSelectProps>> = ({
         search,
         selectedSpots: initializedSelectedSpots,
         reservedSpots,
+        allowAllSpots,
         embedded,
         isInteractionDisabled,
       }}

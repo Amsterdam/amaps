@@ -8,4 +8,5 @@ export interface MultiSelectProps {
   embedded?: boolean;
   selectedSpots?: number[];
   reservedSpots?: number[];
+  allowAllSpots?: boolean;
 }

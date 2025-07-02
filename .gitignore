@@ -11,3 +11,6 @@ app/dist/index.html
 package-lock.json
 app/testEmbedded.html
 .env
+app/node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json
+app/dist/index.html
+package-lock.json
