@@ -21,6 +21,7 @@ declare global {
         zoom?: number;
         selectedSpots?: number[];
         reservedSpots?: number[];
+        allowAllSpots?: boolean;
       }) => void;
     };
   }
@@ -38,6 +39,7 @@ window.multiselect = {
       zoom = 16,
       selectedSpots = [],
       reservedSpots = [],
+      allowAllSpots = false,
     } = options;
 
     const container = document.getElementById(target);
@@ -57,6 +59,7 @@ window.multiselect = {
         zoom={zoom}
         selectedSpots={selectedSpots}
         reservedSpots={reservedSpots}
+        allowAllSpots={allowAllSpots}
         embedded={true}
       />
     );

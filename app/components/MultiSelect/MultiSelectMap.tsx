@@ -34,6 +34,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
     setSelectedMarkers,
     selectedSpots,
     reservedSpots,
+    allowAllSpots,
     isInteractionDisabled,
   } = useMapInstance();
 
@@ -68,7 +69,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
       const properties = polygon.feature?.properties;
       const layerId = properties?.id;
       const parkingType = properties?.e_type;
-      const isReservable = parkingTypes[parkingType]?.reservable;
+      const isReservable = parkingTypes[parkingType]?.reservable || allowAllSpots;
 
       if (layerId && !selectedMarkers.includes(layerId)) {
           polygon.setStyle({
@@ -236,8 +237,8 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
           return {};
         }
         const parkingType = feature.properties.e_type;
-        const isReservable = parkingTypes[parkingType]?.reservable;
-
+        const isReservable = parkingTypes[parkingType]?.reservable || allowAllSpots;
+        console.log("ASD: " + allowAllSpots);
         if (reservedSpots.includes(Number(feature.properties.id))) {
           return {
             fillColor: parkingColors.reedsGereserveerd.fillColor,
@@ -264,7 +265,7 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
       },
       onEachFeature: function (feature: Feature, layer: L.Polygon) {
         const parkingType = feature.properties.e_type;
-        const isReservable = parkingTypes[parkingType]?.reservable;
+        const isReservable = parkingTypes[parkingType]?.reservable || allowAllSpots;
         if (reservedSpots.includes(Number(feature.properties.id)) || !isReservable || isInteractionDisabled) {
           layer.options.interactive = false;
           return;

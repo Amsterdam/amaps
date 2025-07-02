@@ -10,6 +10,7 @@ export interface MapState {
   selectedParkingTypes: string[];
   selectedSpots: number[];
   reservedSpots: number[];
+  allowAllSpots: boolean;
 }
 
 type Action<T extends keyof MapState> = Dispatch<SetStateAction<MapState[T]>>;
