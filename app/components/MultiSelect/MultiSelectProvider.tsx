@@ -9,7 +9,7 @@ const MapProvider: FunctionComponent<PropsWithChildren<MultiSelectProps>> = ({
   children,
   onFeatures,
   center = { latitude: 52.36036, longitude: 4.89956 },
-  zoom = 16,
+  zoom = 13,
   layer = "standaard",
   marker = false,
   search = true,
