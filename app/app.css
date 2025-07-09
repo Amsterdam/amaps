@@ -18,4 +18,5 @@ body,
   padding: 1px 3px;
   border-radius: 4px;
   text-shadow: 0 0 black;
+  white-space: nowrap;
 }
