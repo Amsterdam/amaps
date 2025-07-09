@@ -11,6 +11,7 @@ export interface MapState {
   selectedSpots: number[];
   reservedSpots: number[];
   allowAllSpots: boolean;
+  zoom: number;
 }
 
 type Action<T extends keyof MapState> = Dispatch<SetStateAction<MapState[T]>>;
