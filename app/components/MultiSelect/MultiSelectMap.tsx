@@ -13,7 +13,7 @@ import { fetchFeaturesById } from "~/utils/fetchFeaturesById";
 import { parkingColors } from "~/types/parkingColors";
 import type { Feature } from "geojson";
 
-const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
+const Map = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const createdMapInstance = useRef(false);
   const mapRef = useRef<L.Map | null>(null);
@@ -30,6 +30,8 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
     setPosition,
     markerData,
     setMarkerData,
+    zoom,
+    center,
     selectedMarkers,
     setSelectedMarkers,
     selectedSpots,
@@ -238,7 +240,6 @@ const Map: FunctionComponent<MultiSelectProps> = ({ zoom = 13, center }) => {
         }
         const parkingType = feature.properties.e_type;
         const isReservable = parkingTypes[parkingType]?.reservable || allowAllSpots;
-        console.log("ASD: " + allowAllSpots);
         if (reservedSpots.includes(Number(feature.properties.id))) {
           return {
             fillColor: parkingColors.reedsGereserveerd.fillColor,
