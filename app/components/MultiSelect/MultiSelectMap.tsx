@@ -13,7 +13,7 @@ import { fetchFeaturesById } from "~/utils/fetchFeaturesById";
 import { parkingColors } from "~/types/parkingColors";
 import type { Feature } from "geojson";
 
-const Map: FunctionComponent<MultiSelectProps> = () => {
+const Map = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const createdMapInstance = useRef(false);
   const mapRef = useRef<L.Map | null>(null);
