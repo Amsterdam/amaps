@@ -22,10 +22,10 @@ const MultiSelectInner: FunctionComponent<MultiSelectProps> = (props) => {
     <div className={styles.container}>
       <div className={styles.mapWrapper}>
         <Map />
-        <Controls multiselect={true} />
+        {!isInteractionDisabled && <Controls multiselect={true} />}
         {!isInteractionDisabled && <AddressSearch multiselect={true} />}
         <Legend />
-        {!isInteractionDisabled && <Counter />}
+        <Counter />
       </div>
       <div className={styles.resultWrapper} style={wrapperFlexStyle}>
         <MultiSelectResult />
