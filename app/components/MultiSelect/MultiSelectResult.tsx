@@ -17,12 +17,19 @@ const MultiSelectResult: FunctionComponent = () => {
     isInteractionDisabled,
   } = useMapInstance();
 
+  const [header, setHeader] = useState({
+    MapURL: "",
+    aantalAangeklikt: 0,
+    aantalGeladen: 0,
+  });
+
+  const [loadedMarkerData, setLoadedMarkerData] = useState<any[]>([]);
+
   const selectedFeatures = useMemo(() => {
     return markerData.filter((feature) =>
       selectedMarkers.includes(feature.properties.id)
     );
   }, [selectedMarkers, markerData]);
-
 
   const mapURL = useMemo(() => {
     const baseUrl = "https://amaps.amsterdam.nl";
@@ -34,35 +41,50 @@ const MultiSelectResult: FunctionComponent = () => {
   }, [selectedMarkers]);
 
   useEffect(() => {
+    setHeader({
+      MapURL: mapURL,
+      aantalAangeklikt: selectedMarkers.length,
+      aantalGeladen: loadedMarkerData.length,
+    });
+
+    setResults([header, ...loadedMarkerData]);
+
+    if (onFeatures) {
+      onFeatures([header, ...loadedMarkerData]);
+    }
+  }, [mapURL, selectedMarkers, loadedMarkerData]);
+
+  // Load details for selected features
+  useEffect(() => {
     const loadDetails = async () => {
       try {
-        const allDetails: any[] = [];
+        // Filter out unselected markers from loadedMarkerData
+        const filteredMarkerData = loadedMarkerData.filter((data) =>
+          selectedMarkers.includes(data.object?.properties?.id)
+        );
 
-        // Add the MapURL as the first element
-        allDetails.push({ MapURL: mapURL });
+        const newMarkerData = [...filteredMarkerData];
 
         for (const feature of selectedFeatures) {
-          const existing = results.find(
+          const existing = newMarkerData.find(
             (r) => r.object?.properties?.id === feature.properties.id
           );
 
           // Don't query details we've already queried
           if (existing) {
-            allDetails.push(existing);
-          } else {
-            const latlng = getFeatureCenter(feature);
-            if (latlng){
-              const featureDetails = await pointQueryChain({ latlng }, feature);
-              allDetails.push(featureDetails);
-            }
+            continue;
+          }
+
+          const latlng = getFeatureCenter(feature);
+          if (latlng){
+            const featureDetails = await pointQueryChain({ latlng }, feature);
+            newMarkerData.push(featureDetails);
+
+            setLoadedMarkerData([...newMarkerData]);
           }
         }
 
-        if (onFeatures) {
-          onFeatures(allDetails);
-        }
-
-        setResults(allDetails);
+        setLoadedMarkerData(newMarkerData);
       } catch (error) {
         console.error("Er ging iets mis bij het inladen van informatie:", error);
       }
@@ -71,12 +93,10 @@ const MultiSelectResult: FunctionComponent = () => {
     if (selectedFeatures.length) {
       loadDetails();
     } else {
-      if (onFeatures) {
-        onFeatures([{ MapURL: mapURL }]);
-      }
-      setResults([{ MapURL: mapURL }]);
+      // If no features are selected, clear the loadedMarkerData
+      setLoadedMarkerData([]);
     }
-  }, [selectedFeatures, mapURL]);
+  }, [selectedFeatures]);
 
   if (embedded || isInteractionDisabled) {
     return null;
