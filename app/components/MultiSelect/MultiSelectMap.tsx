@@ -118,6 +118,11 @@ const Map = () => {
         [52.25168, 4.64034],
         [52.50536, 5.10737],
       ],
+      dragging: !isInteractionDisabled,
+      scrollWheelZoom: !isInteractionDisabled,
+      doubleClickZoom: !isInteractionDisabled,
+      boxZoom: !isInteractionDisabled,
+      keyboard: !isInteractionDisabled,
     });
 
     // Remove Leaflet link from the map

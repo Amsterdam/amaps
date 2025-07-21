@@ -11,6 +11,7 @@ import type { MultiSelectProps } from "../../types/embeddedTypes";
 import { useMapInstance } from "./MultiSelectContext";
 
 const MultiSelectInner: FunctionComponent<MultiSelectProps> = (props) => {
+  //Interaction is disabled when user is viewing amaps as a summary
   const { isInteractionDisabled } = useMapInstance();
 
   const wrapperFlexStyle = {
@@ -22,8 +23,8 @@ const MultiSelectInner: FunctionComponent<MultiSelectProps> = (props) => {
     <div className={styles.container}>
       <div className={styles.mapWrapper}>
         <Map />
-        <Controls multiselect={true} />
-        <AddressSearch multiselect={true} />
+        {!isInteractionDisabled && <Controls multiselect={true} />}
+        {!isInteractionDisabled && <AddressSearch multiselect={true} />}
         <Legend />
         <Counter />
       </div>
