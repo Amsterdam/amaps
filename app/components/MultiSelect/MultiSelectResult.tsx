@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type FunctionComponent } from "react";
 import { Button } from "@amsterdam/design-system-react";
 import "../../styles/styles.module.css";
-import { pointQueryChain } from "~/utils/pointQuery";
+import { pointQueryChain, type PointQueryResult } from "~/utils/pointQuery";
 import { useMapInstance } from "./MultiSelectContext";
 import { getFeatureCenter } from "~/utils/getFeatureCenter";
 
@@ -17,7 +17,7 @@ const MultiSelectResult: FunctionComponent = () => {
     isInteractionDisabled,
   } = useMapInstance();
 
-  const [loadedMarkerData, setLoadedMarkerData] = useState<any[]>([]);
+  const [loadedMarkerData, setLoadedMarkerData] = useState<PointQueryResult[]>([]);
   const [prevSelected, setPrevSelected] = useState<string[]>([]);
 
   const mapURL = useMemo(() => {

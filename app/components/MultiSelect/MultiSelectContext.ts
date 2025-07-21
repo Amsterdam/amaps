@@ -12,6 +12,7 @@ export interface MapState {
   reservedSpots: number[];
   allowAllSpots: boolean;
   zoom: number;
+  embedded: boolean;
 }
 
 type Action<T extends keyof MapState> = Dispatch<SetStateAction<MapState[T]>>;
@@ -25,6 +26,7 @@ export interface MapContextProps extends MapState {
   results: any[];
   setResults: Dispatch<SetStateAction<any[]>>;
   isInteractionDisabled: boolean;
+  onFeatures?: (features: any[]) => void;
 }
 
 export const MapContext = createContext<MapContextProps | null>(null);
