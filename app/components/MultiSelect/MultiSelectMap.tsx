@@ -119,7 +119,6 @@ const Map = () => {
         [52.50536, 5.10737],
       ],
       dragging: !isInteractionDisabled,
-      touchZoom: !isInteractionDisabled,
       scrollWheelZoom: !isInteractionDisabled,
       doubleClickZoom: !isInteractionDisabled,
       boxZoom: !isInteractionDisabled,
