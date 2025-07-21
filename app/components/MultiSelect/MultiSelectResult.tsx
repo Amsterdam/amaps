@@ -17,19 +17,8 @@ const MultiSelectResult: FunctionComponent = () => {
     isInteractionDisabled,
   } = useMapInstance();
 
-  const [header, setHeader] = useState({
-    MapURL: "",
-    aantalAangeklikt: 0,
-    aantalGeladen: 0,
-  });
-
   const [loadedMarkerData, setLoadedMarkerData] = useState<any[]>([]);
-
-  const selectedFeatures = useMemo(() => {
-    return markerData.filter((feature) =>
-      selectedMarkers.includes(feature.properties.id)
-    );
-  }, [selectedMarkers, markerData]);
+  const [prevSelected, setPrevSelected] = useState<string[]>([]);
 
   const mapURL = useMemo(() => {
     const baseUrl = "https://amaps.amsterdam.nl";
@@ -40,69 +29,64 @@ const MultiSelectResult: FunctionComponent = () => {
     return `${baseUrl}/multiselect?${queryParams.toString()}`;
   }, [selectedMarkers]);
 
-  useEffect(() => {
-    setHeader({
-      MapURL: mapURL,
-      aantalAangeklikt: selectedMarkers.length,
-      aantalGeladen: loadedMarkerData.length,
-    });
+  const header = useMemo(() => ({
+    MapURL: mapURL,
+    aantalAangeklikt: selectedMarkers.length,
+    aantalGeladen: loadedMarkerData.length,
+  }), [mapURL, selectedMarkers, loadedMarkerData]);
 
+  useEffect(() => {
     setResults([header, ...loadedMarkerData]);
 
     if (onFeatures) {
       onFeatures([header, ...loadedMarkerData]);
     }
-  }, [mapURL, selectedMarkers, loadedMarkerData]);
+  }, [header, loadedMarkerData]);
 
-  // Load details for selected features
+  // Load details for latest selected features, or remove details if feature is unselected
   useEffect(() => {
-    const loadDetails = async () => {
+    const newlySelected = selectedMarkers.filter(id => !prevSelected.includes(id));
+    const removed = prevSelected.filter(id => !selectedMarkers.includes(id));
+    setPrevSelected(selectedMarkers);
+
+    if (removed.length > 0) {
+      setLoadedMarkerData(prev =>
+        prev.filter(d => !removed.includes(d.object?.properties?.id))
+      );
+    }
+
+    newlySelected.forEach(async (id) => {
+      const feature = markerData.find(f => f.properties.id === id);
+      if (!feature) return;
+
+      const latlng = getFeatureCenter(feature);
+      if (!latlng) return;
+
       try {
-        // Filter out unselected markers from loadedMarkerData
-        const filteredMarkerData = loadedMarkerData.filter((data) =>
-          selectedMarkers.includes(data.object?.properties?.id)
-        );
+        const featureData = await pointQueryChain({ latlng }, feature);
+        setLoadedMarkerData(prev => {
+          const alreadyLoaded = prev.some(d => d.object?.properties?.id === id);
+          const stillSelected = selectedMarkers.includes(id)
 
-        const newMarkerData = [...filteredMarkerData];
+          if (!stillSelected || alreadyLoaded) return prev;
 
-        for (const feature of selectedFeatures) {
-          const existing = newMarkerData.find(
-            (r) => r.object?.properties?.id === feature.properties.id
-          );
-
-          // Don't query details we've already queried
-          if (existing) {
-            continue;
-          }
-
-          const latlng = getFeatureCenter(feature);
-          if (latlng){
-            const featureDetails = await pointQueryChain({ latlng }, feature);
-            newMarkerData.push(featureDetails);
-
-            setLoadedMarkerData([...newMarkerData]);
-          }
-        }
-
-        setLoadedMarkerData(newMarkerData);
+          return [...prev, featureData];
+        })
       } catch (error) {
-        console.error("Er ging iets mis bij het inladen van informatie:", error);
+        console.error("Er ging iets mis bij het inladen van informatie: ", error);
       }
-    };
+    });
 
-    if (selectedFeatures.length) {
-      loadDetails();
-    } else {
-      // If no features are selected, clear the loadedMarkerData
+    if (selectedMarkers.length === 0) {
       setLoadedMarkerData([]);
     }
-  }, [selectedFeatures]);
+  }, [selectedMarkers]);
 
   if (embedded || isInteractionDisabled) {
     return null;
   }
 
-  if (!selectedFeatures.length) {
+  if (selectedMarkers.length === 0) {
     return (
       <section>
         <div style={{ marginBottom: "1rem" }}>
