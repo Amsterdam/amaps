@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type FunctionComponent } from "react";
 import { Button } from "@amsterdam/design-system-react";
 import "../../styles/styles.module.css";
-import { pointQueryChain } from "~/utils/pointQuery";
+import { pointQueryChain, type PointQueryResult } from "~/utils/pointQuery";
 import { useMapInstance } from "./MultiSelectContext";
 import { getFeatureCenter } from "~/utils/getFeatureCenter";
 
@@ -17,12 +17,8 @@ const MultiSelectResult: FunctionComponent = () => {
     isInteractionDisabled,
   } = useMapInstance();
 
-  const selectedFeatures = useMemo(() => {
-    return markerData.filter((feature) =>
-      selectedMarkers.includes(feature.properties.id)
-    );
-  }, [selectedMarkers, markerData]);
-
+  const [loadedMarkerData, setLoadedMarkerData] = useState<PointQueryResult[]>([]);
+  const [prevSelected, setPrevSelected] = useState<string[]>([]);
 
   const mapURL = useMemo(() => {
     const baseUrl = "https://amaps.amsterdam.nl";
@@ -33,56 +29,64 @@ const MultiSelectResult: FunctionComponent = () => {
     return `${baseUrl}/multiselect?${queryParams.toString()}`;
   }, [selectedMarkers]);
 
+  const header = useMemo(() => ({
+    MapURL: mapURL,
+    aantalAangeklikt: selectedMarkers.length,
+    aantalGeladen: loadedMarkerData.length,
+  }), [mapURL, selectedMarkers, loadedMarkerData]);
+
   useEffect(() => {
-    const loadDetails = async () => {
-      try {
-        const allDetails: any[] = [];
+    setResults([header, ...loadedMarkerData]);
 
-        // Add the MapURL as the first element
-        allDetails.push({ MapURL: mapURL });
-
-        for (const feature of selectedFeatures) {
-          const existing = results.find(
-            (r) => r.object?.properties?.id === feature.properties.id
-          );
-
-          // Don't query details we've already queried
-          if (existing) {
-            allDetails.push(existing);
-          } else {
-            const latlng = getFeatureCenter(feature);
-            if (latlng){
-              const featureDetails = await pointQueryChain({ latlng }, feature);
-              allDetails.push(featureDetails);
-            }
-          }
-        }
-
-        if (onFeatures) {
-          onFeatures(allDetails);
-        }
-
-        setResults(allDetails);
-      } catch (error) {
-        console.error("Er ging iets mis bij het inladen van informatie:", error);
-      }
-    };
-
-    if (selectedFeatures.length) {
-      loadDetails();
-    } else {
-      if (onFeatures) {
-        onFeatures([{ MapURL: mapURL }]);
-      }
-      setResults([{ MapURL: mapURL }]);
+    if (onFeatures) {
+      onFeatures([header, ...loadedMarkerData]);
     }
-  }, [selectedFeatures, mapURL]);
+  }, [header, loadedMarkerData]);
+
+  // Load details for latest selected features, or remove details if feature is unselected
+  useEffect(() => {
+    const newlySelected = selectedMarkers.filter(id => !prevSelected.includes(id));
+    const removed = prevSelected.filter(id => !selectedMarkers.includes(id));
+    setPrevSelected(selectedMarkers);
+
+    if (removed.length > 0) {
+      setLoadedMarkerData(prev =>
+        prev.filter(d => !removed.includes(d.object?.properties?.id))
+      );
+    }
+
+    newlySelected.forEach(async (id) => {
+      const feature = markerData.find(f => f.properties.id === id);
+      if (!feature) return;
+
+      const latlng = getFeatureCenter(feature);
+      if (!latlng) return;
+
+      try {
+        const featureData = await pointQueryChain({ latlng }, feature);
+        setLoadedMarkerData(prev => {
+          const alreadyLoaded = prev.some(d => d.object?.properties?.id === id);
+          const stillSelected = selectedMarkers.includes(id)
+
+          if (!stillSelected || alreadyLoaded) return prev;
+
+          return [...prev, featureData];
+        })
+      } catch (error) {
+        console.error("Er ging iets mis bij het inladen van informatie: ", error);
+      }
+    });
+
+    if (selectedMarkers.length === 0) {
+      setLoadedMarkerData([]);
+    }
+  }, [selectedMarkers]);
 
   if (embedded || isInteractionDisabled) {
     return null;
   }
 
-  if (!selectedFeatures.length) {
+  if (selectedMarkers.length === 0) {
     return (
       <section>
         <div style={{ marginBottom: "1rem" }}>
