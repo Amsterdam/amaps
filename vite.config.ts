@@ -9,6 +9,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
+    cache: false,
     coverage: {
       exclude: [
         "**/types/**",
