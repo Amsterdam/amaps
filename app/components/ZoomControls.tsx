@@ -1,7 +1,7 @@
 import { Button, Icon } from "@amsterdam/design-system-react";
 import {
-  EnlargeIcon,
-  MinimiseIcon,
+  PlusIcon,
+  MinusIcon,
 } from "@amsterdam/design-system-react-icons";
 import { useMapInstance as useMapMS } from "./MultiSelect/MultiSelectContext";
 import { useMapInstance as useMapPQ } from "./PointQuery/PointQueryContext";
@@ -25,11 +25,11 @@ const Controls = ({ multiselect }: { multiselect: boolean }) => {
     <div className={styles.buttons}>
       <Button variant="secondary" onClick={handleZoomInClick}>
         <span className="ams-visually-hidden">Zoom in</span>
-        <Icon svg={EnlargeIcon} size="large" />
+        <Icon svg={PlusIcon} size="large" />
       </Button>
       <Button variant="secondary" onClick={handleZoomOutClick}>
         <span className="ams-visually-hidden">Zoom out</span>
-        <Icon svg={MinimiseIcon} size="large" />
+        <Icon svg={MinusIcon} size="large" />
       </Button>
     </div>
   );
