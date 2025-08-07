@@ -89,6 +89,7 @@ const AddressSearch = ({ multiselect }: { multiselect: boolean }) => {
           placeholder="Kies adres..."
           onChange={(e) => setSearchTerm(e.target.value)}
           value={searchTerm}
+          className={styles.searchInput}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               e.preventDefault();
