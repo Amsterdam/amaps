@@ -29,10 +29,12 @@ export async function fetchFeaturesById(ids: string[]) {
       },
       properties: {
         id: vak.id,
-        street: vak.straatnaam,
+        buurtcode: vak.buurtcode,
+        straatnaam: vak.straatnaam,
         type: vak.type,
         soort: vak.soort,
         e_type: vak.eType,
+        versiedatum: vak.versiedatum,
         aantal: vak.aantal,
       },
     }));
