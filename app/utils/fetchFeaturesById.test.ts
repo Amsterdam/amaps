@@ -25,11 +25,13 @@ describe('fetchFeaturesById', () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       json: vi.fn().mockResolvedValueOnce({
         id: '1',
+        buurtcode: 'B001',
         straatnaam: 'Main Street',
         type: 'Parking',
         soort: 'Public',
         eType: 'Car',
         aantal: 10,
+        versiedatum: '01-01-1960',
         geometry: {
           coordinates: [
             [
@@ -63,10 +65,12 @@ describe('fetchFeaturesById', () => {
         },
         properties: {
           id: '1',
-          street: 'Main Street',
+          buurtcode: 'B001',
+          straatnaam: 'Main Street',
           type: 'Parking',
           soort: 'Public',
           e_type: 'Car',
+          versiedatum: '01-01-1960',
           aantal: 10,
         },
       },
