@@ -50,6 +50,9 @@ const MapProvider: FunctionComponent<PropsWithChildren<MultiSelectProps>> = ({
     return selectedSpots;
   });
 
+  // Ensure that reservedSpots is a list of numbers
+  const initializedReservedSpots = reservedSpots.map(Number);
+
   const isInteractionDisabled = !!getQueryParams().get("selectedSpots");
 
   return (
@@ -73,7 +76,7 @@ const MapProvider: FunctionComponent<PropsWithChildren<MultiSelectProps>> = ({
         marker,
         search,
         selectedSpots: initializedSelectedSpots,
-        reservedSpots,
+        reservedSpots: initializedReservedSpots,
         allowAllSpots,
         embedded,
         isInteractionDisabled,
