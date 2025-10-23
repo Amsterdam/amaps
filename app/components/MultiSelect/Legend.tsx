@@ -3,8 +3,10 @@ import styles from "../../styles/legend.module.css";
 import { Button } from "@amsterdam/design-system-react";
 import { ChevronDownIcon, ChevronUpIcon } from "@amsterdam/design-system-react-icons";
 import { parkingColors } from "~/types/parkingColors";
+import { useMapInstance } from "./MultiSelectContext";
 
 const Legend: FunctionComponent = () => {
+  const { isInteractionDisabled } = useMapInstance();
   const [collapsed, setCollapsed] = useState(true);
   const toggleCollapse = () => setCollapsed((prev) => !prev);
 
@@ -47,20 +49,22 @@ const Legend: FunctionComponent = () => {
           </div>
 
           {/* Niet reserveerbaar */}
-          <div className={styles.legendRow}>
-            <span className={styles.labelText}>Niet reserveerbaar</span>
-            <span
-              className={`${styles.colorSquare} ${styles.stripes}`}
-              style={
-                {
-                  '--stripe-color': parkingColors.nonReservable.borderColor,
-                  '--stripe-space-color': parkingColors.nonReservable.fillColor,
-                  backgroundColor: parkingColors.nonReservable.fillColor,
-                  border: `2px solid ${parkingColors.nonReservable.borderColor}`,
-                } as React.CSSProperties
-              }
-            />
-          </div>
+          {!isInteractionDisabled && (
+            <div className={styles.legendRow}>
+              <span className={styles.labelText}>Niet reserveerbaar</span>
+              <span
+                className={`${styles.colorSquare} ${styles.stripes}`}
+                style={
+                  {
+                    '--stripe-color': parkingColors.nonReservable.borderColor,
+                    '--stripe-space-color': parkingColors.nonReservable.fillColor,
+                    backgroundColor: parkingColors.nonReservable.fillColor,
+                    border: `2px solid ${parkingColors.nonReservable.borderColor}`,
+                  } as React.CSSProperties
+                }
+              />
+            </div>
+          )}
         </div>
       )}
     </div>
