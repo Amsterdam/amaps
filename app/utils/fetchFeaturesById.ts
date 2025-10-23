@@ -1,4 +1,5 @@
 import proj4 from "proj4";
+import { parkingTypes } from "~/types/parkingTypes";
 
 proj4.defs(
   "EPSG:28992",
@@ -19,25 +20,30 @@ export async function fetchFeaturesById(ids: string[]) {
 
   const response = res
     .filter((vak) => vak.geometry)
-    .map((vak) => ({
-      type: "Feature",
-      geometry: {
-        type: "Polygon",
-        coordinates: vak.geometry.coordinates.map((coord) =>
-          coord.map(rdToWgs)
-        ),
-      },
-      properties: {
-        id: vak.id,
-        buurtcode: vak.buurtcode,
-        straatnaam: vak.straatnaam,
-        type: vak.type,
-        soort: vak.soort,
-        e_type: vak.eType,
-        versiedatum: vak.versiedatum,
-        aantal: vak.aantal,
-      },
-    }));
+    .map((vak) => {
+      const eTypeText = parkingTypes[vak.eType]?.label;
+
+      return {
+        type: "Feature",
+        geometry: {
+          type: "Polygon",
+          coordinates: vak.geometry.coordinates.map((coord) =>
+            coord.map(rdToWgs)
+          ),
+        },
+        properties: {
+          id: vak.id,
+          buurtcode: vak.buurtcode,
+          straatnaam: vak.straatnaam,
+          type: vak.type,
+          soort: vak.soort,
+          e_type: vak.eType,
+          versiedatum: vak.versiedatum,
+          aantal: vak.aantal,
+          e_type_tekst: eTypeText,
+        },
+      };
+    });
 
     
   return response;

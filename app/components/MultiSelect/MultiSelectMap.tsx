@@ -252,7 +252,8 @@ const Map = () => {
             fillOpacity: 0.8,
             weight: parkingColors.reedsGereserveerd.weight,
           };
-        } else if (isReservable) {
+        } else if (isReservable || isInteractionDisabled) {
+          // If interaction is disabled, do not discern between reservable and nonReservable
           return {
             fillColor: parkingColors.reservable.fillColor,
             color: parkingColors.reservable.borderColor,
