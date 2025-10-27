@@ -20,3 +20,8 @@ body,
   text-shadow: 0 0 black;
   white-space: nowrap;
 }
+
+.ams-icon[hidden] {
+  display: inline-flex !important;
+  visibility: visible !important;
+}
