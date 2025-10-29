@@ -1,8 +1,8 @@
 export const parkingColors: Record<string, { fillColor: string; borderColor: string; weight: number } > = 
 {
   selected: {
-    fillColor: "#ec000050",
-    borderColor: "#ec0000",
+    fillColor: "#00A03C",
+    borderColor: "#007d30ff",
     weight: 3,
   },
   reservable: {
@@ -18,6 +18,11 @@ export const parkingColors: Record<string, { fillColor: string; borderColor: str
   reedsGereserveerd: {
     fillColor: "#e6a14750",
     borderColor: "#e6a147",
+    weight: 2,
+  },
+  specialeBestemming: {
+    fillColor: "#FF9100",
+    borderColor: "#a75f00ff",
     weight: 2,
   },
 };

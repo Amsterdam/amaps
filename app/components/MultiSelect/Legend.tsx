@@ -6,7 +6,7 @@ import { parkingColors } from "~/types/parkingColors";
 import { useMapInstance } from "./MultiSelectContext";
 
 const Legend: FunctionComponent = () => {
-  const { isInteractionDisabled } = useMapInstance();
+  const { isInteractionDisabled, allowAllSpots } = useMapInstance();
   const [collapsed, setCollapsed] = useState(true);
   const toggleCollapse = () => setCollapsed((prev) => !prev);
 
@@ -48,22 +48,35 @@ const Legend: FunctionComponent = () => {
             />
           </div>
 
-          {/* Niet reserveerbaar */}
+          {/* Niet reserveerbaar / Special bestemming */}
           {!isInteractionDisabled && (
-            <div className={styles.legendRow}>
-              <span className={styles.labelText}>Niet reserveerbaar</span>
-              <span
-                className={`${styles.colorSquare} ${styles.stripes}`}
-                style={
-                  {
-                    '--stripe-color': parkingColors.nonReservable.borderColor,
-                    '--stripe-space-color': parkingColors.nonReservable.fillColor,
-                    backgroundColor: parkingColors.nonReservable.fillColor,
-                    border: `2px solid ${parkingColors.nonReservable.borderColor}`,
-                  } as React.CSSProperties
-                }
-              />
-            </div>
+            <>
+              {allowAllSpots ? (
+                <div className={styles.legendRow}>
+                  <span className={styles.labelText}>Speciale Bestemming</span>
+                  <span
+                    className={`${styles.colorSquare} ${styles.dots}`}
+                    style={{
+                      '--dot-color': parkingColors.specialeBestemming.borderColor,
+                      '--dot-bg-color': parkingColors.specialeBestemming.fillColor,
+                      backgroundColor: parkingColors.specialeBestemming.fillColor,
+                      border: `2px solid ${parkingColors.specialeBestemming.borderColor}`,
+                    } as React.CSSProperties}
+                  />
+                </div>
+              ) : (
+                <div className={styles.legendRow}>
+                  <span className={styles.labelText}>Niet reserveerbaar</span>
+                  <span
+                    className={styles.colorSquare}
+                    style={{
+                      backgroundColor: parkingColors.nonReservable.fillColor,
+                      border: `2px solid ${parkingColors.nonReservable.borderColor}`,
+                    }}
+                  />
+                </div>
+              )}
+            </>
           )}
         </div>
       )}
