@@ -253,14 +253,16 @@ setPattern(pattern);
         const parkingType = feature.properties.e_type;
         const isReservable = parkingTypes[parkingType]?.reservable;
         if (reservedSpots.includes(Number(feature.properties.id))) {
+          // Always non-reserveerbaar if already reserved
           return {
-            fillColor: parkingColors.reedsGereserveerd.fillColor,
-            color: parkingColors.reedsGereserveerd.borderColor,
-            fillOpacity: 0.8,
-            weight: parkingColors.reedsGereserveerd.weight,
+            fillPattern: stripePattern(mapInstance),
+            fillColor: parkingColors.nonReservable.fillColor,
+            color: parkingColors.nonReservable.borderColor,
+            fillOpacity: 0.7,
+            weight: parkingColors.nonReservable.weight,
           };
-        } else if (isReservable || isInteractionDisabled) {
-          // If interaction is disabled, do not discern between reservable and nonReservable
+        } else if (isReservable) {
+          // Reservable spots
           return {
             fillColor: parkingColors.reservable.fillColor,
             color: parkingColors.reservable.borderColor,
@@ -268,7 +270,7 @@ setPattern(pattern);
             weight: parkingColors.reservable.weight,
           };
         } else {
-        // If allowAllSpots is set to true, nonReservable parking spots become specialeBestemming
+          // Special spots, only reservable if allowAllSpots is true
           return {
             fillPattern: pattern,
             fillColor: allowAllSpots
@@ -360,7 +362,7 @@ setPattern(pattern);
         selectedPolygons.forEach((selectedPolygon) => {
           const parkingType = selectedPolygon.feature?.properties?.e_type;
           const isSpecialeBestemming =
-            parkingTypes[parkingType]?.reservable === false && allowAllSpots;
+            parkingTypes[parkingType]?.reservable === false;
 
           if (isSpecialeBestemming) {
             const greenPattern = greenDotPattern(mapRef.current!);
