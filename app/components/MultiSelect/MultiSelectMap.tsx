@@ -11,6 +11,7 @@ import { parkingTypes } from "~/types/parkingTypes";
 import type { MultiSelectProps } from "~/types/embeddedTypes";
 import { fetchFeaturesById } from "~/utils/fetchFeaturesById";
 import { parkingColors } from "~/types/parkingColors";
+import { stripePattern, specialeBestemmingDotPattern, greenDotPattern } from "~/types/patterns";
 import type { Feature } from "geojson";
 
 const Map = () => {
@@ -72,21 +73,33 @@ const Map = () => {
       const layerId = properties?.id;
       const parkingType = properties?.e_type;
       const isReservable = parkingTypes[parkingType]?.reservable || allowAllSpots;
+      const isSpecialeBestemming =
+        parkingTypes[parkingType]?.reservable === false && allowAllSpots;
 
       if (layerId && !selectedMarkers.includes(layerId)) {
+          const styleKey = isSpecialeBestemming
+            ? "specialeBestemming"
+            : isReservable
+            ? "reservable"
+            : "nonReservable";
+
           polygon.setStyle({
-            fillColor: parkingColors[isReservable ? "reservable" : "nonReservable"].fillColor,
+            fillColor: parkingColors[styleKey].fillColor,
             fillOpacity: 0.1,
-            color: parkingColors[isReservable ? "reservable" : "nonReservable"].borderColor,
-            weight: parkingColors[isReservable ? "reservable" : "nonReservable"].weight,
+            color: parkingColors[styleKey].borderColor,
+            weight: parkingColors[styleKey].weight,
+            ...(isSpecialeBestemming ? { fillPattern: pattern, fillOpacity: 0.7 } : {}),
           });
-      } else if (layerId && selectedMarkers.includes(layerId)) {
+        } else if (layerId && selectedMarkers.includes(layerId)) {
         polygon.setStyle({
           fillColor: parkingColors.selected.fillColor,
           color: parkingColors.selected.borderColor,
           fillOpacity: 1,
           opacity: 1,
           weight: parkingColors.selected.weight,
+          ...(isSpecialeBestemming
+            ? { fillPattern: greenDotPattern(e.target._map) }
+            : {}),
         });
       }
     },
@@ -132,17 +145,11 @@ const Map = () => {
     mapRef.current = map;
     setMapInstance(map);
 
-    const stripesPattern = new (L as any).StripePattern({
-      weight: 2,
-      spaceWeight: 9,
-      color: parkingColors.nonReservable.borderColor,
-      spaceColor: parkingColors.nonReservable.fillColor,
-      spaceOpacity: 1.0,
-      angle: 0,
-      opacity: 1.0,
-    })
-    stripesPattern.addTo(mapRef.current!)
-    setPattern(stripesPattern);
+const pattern = allowAllSpots
+  ? specialeBestemmingDotPattern(map) 
+  :  stripePattern(map);
+
+setPattern(pattern);
 
     map.on("moveend", () => {
       setPosition([map.getCenter().lat, map.getCenter().lng]);
@@ -244,16 +251,18 @@ const Map = () => {
           return {};
         }
         const parkingType = feature.properties.e_type;
-        const isReservable = parkingTypes[parkingType]?.reservable || allowAllSpots;
+        const isReservable = parkingTypes[parkingType]?.reservable;
         if (reservedSpots.includes(Number(feature.properties.id))) {
+          // Always non-reserveerbaar if already reserved
           return {
-            fillColor: parkingColors.reedsGereserveerd.fillColor,
-            color: parkingColors.reedsGereserveerd.borderColor,
-            fillOpacity: 0.8,
-            weight: parkingColors.reedsGereserveerd.weight,
+            fillPattern: stripePattern(mapInstance),
+            fillColor: parkingColors.nonReservable.fillColor,
+            color: parkingColors.nonReservable.borderColor,
+            fillOpacity: 0.7,
+            weight: parkingColors.nonReservable.weight,
           };
-        } else if (isReservable || isInteractionDisabled) {
-          // If interaction is disabled, do not discern between reservable and nonReservable
+        } else if (isReservable) {
+          // Reservable spots
           return {
             fillColor: parkingColors.reservable.fillColor,
             color: parkingColors.reservable.borderColor,
@@ -261,10 +270,15 @@ const Map = () => {
             weight: parkingColors.reservable.weight,
           };
         } else {
+          // Special spots, only reservable if allowAllSpots is true
           return {
             fillPattern: pattern,
-            fillColor: parkingColors.nonReservable.fillColor,
-            color: parkingColors.nonReservable.borderColor,
+            fillColor: allowAllSpots
+              ? parkingColors.specialeBestemming.fillColor
+              : parkingColors.nonReservable.fillColor,
+            color: allowAllSpots
+              ? parkingColors.specialeBestemming.borderColor
+              : parkingColors.nonReservable.borderColor,
             fillOpacity: 0.7,
             weight: parkingColors.nonReservable.weight,
           };
@@ -346,13 +360,30 @@ const Map = () => {
 
       if (selectedPolygons) {
         selectedPolygons.forEach((selectedPolygon) => {
-          selectedPolygon.setStyle({
-            fillColor: parkingColors.selected.fillColor,
-            color: parkingColors.selected.borderColor,
-            fillOpacity: 1,
-            opacity: 1,
-            weight: parkingColors.selected.weight,
-          });
+          const parkingType = selectedPolygon.feature?.properties?.e_type;
+          const isSpecialeBestemming =
+            parkingTypes[parkingType]?.reservable === false;
+
+          if (isSpecialeBestemming) {
+            const greenPattern = greenDotPattern(mapRef.current!);
+            (selectedPolygon as any).setStyle({
+              fillPattern: greenPattern,
+              fillColor: parkingColors.selected.fillColor,
+              color: parkingColors.selected.borderColor,
+              fillOpacity: 1,
+              opacity: 1,
+              weight: parkingColors.selected.weight,
+            });
+          } else {
+            selectedPolygon.setStyle({
+              fillColor: parkingColors.selected.fillColor,
+              color: parkingColors.selected.borderColor,
+              fillOpacity: 1,
+              opacity: 1,
+              weight: parkingColors.selected.weight,
+            });
+          }
+
           selectedPolygon.bringToFront();
         });
       }
