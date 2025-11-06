@@ -31,7 +31,7 @@ const MultiSelectResult: FunctionComponent = () => {
     if (allowAllSpots) {
       queryParams.set("allowAllSpots", "true");
     }
-    console.log(`${baseUrl}/multiselect?${queryParams.toString()}`);
+    
     return `${baseUrl}/multiselect?${queryParams.toString()}`;
   }, [selectedMarkers]);
 
