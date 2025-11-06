@@ -14,6 +14,7 @@ const MultiSelectResult: FunctionComponent = () => {
     embedded,
     results,
     setResults,
+    allowAllSpots,
     isInteractionDisabled,
   } = useMapInstance();
 
@@ -26,6 +27,11 @@ const MultiSelectResult: FunctionComponent = () => {
     if (selectedMarkers.length > 0) {
       queryParams.set("selectedSpots", selectedMarkers.join(","));
     }
+
+    if (allowAllSpots) {
+      queryParams.set("allowAllSpots", "true");
+    }
+    
     return `${baseUrl}/multiselect?${queryParams.toString()}`;
   }, [selectedMarkers]);
 
