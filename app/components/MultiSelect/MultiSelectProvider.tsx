@@ -33,7 +33,13 @@ const MapProvider: FunctionComponent<PropsWithChildren<MultiSelectProps>> = ({
   // Helper function to parse query parameters from the URL
   const getQueryParams = (): URLSearchParams => {
     if (typeof window !== "undefined") {
-      return new URLSearchParams(window.location.search);
+    // Fix for handling cases where the "&" in the MapURL is incorrectly encoded as "enamp;".
+    // This issue originates from the third-party system which receives the MapURL.
+    // The third-party system applies additional encoding to the MapURL returned by Amaps, which turns "&" into "enamp;".
+    // While the root cause lies in the external system, fixing it there is not currently feasible due to their use of low-code software.
+      const queryString = window.location.search.replace(/enamp;/g, "&");
+
+      return new URLSearchParams(queryString);
     }
     return new URLSearchParams(); // Fallback for non-browser environments like when embedded
   };
