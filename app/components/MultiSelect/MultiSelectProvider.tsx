@@ -33,7 +33,7 @@ const MapProvider: FunctionComponent<PropsWithChildren<MultiSelectProps>> = ({
   // Helper function to parse query parameters from the URL
   const getQueryParams = (): URLSearchParams => {
     if (typeof window !== "undefined") {
-      // Fix the case where the "?" in an URL is encoded to "enamp;"
+      // Fix the case where the "&" in an URL is encoded to "enamp;"
       const queryString = window.location.search.replace(/enamp;/g, "&");
       return new URLSearchParams(queryString);
     }
