@@ -6,6 +6,9 @@ proj4.defs(
   "+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +towgs84=565.417,50.3319,465.552,-0.398957,0.343988,-1.8774,4.0725 +units=m +no_defs"
 );
 
+console.log("asd")
+console.log(window.env?.AMSTERDAM_API_KEY);
+
 const transformCoords = proj4(
   proj4.defs("EPSG:4326"),
   proj4.defs("EPSG:28992")
@@ -81,24 +84,34 @@ function findOmgevingFeature(features: any[], type: string): any | null {
   return feature ? feature.properties : null;
 }
 
+async function getClosestBagID(xy: LatLng): Promise<string | null>{
+  const baseUrl = "https://api.data.amsterdam.nl/geosearch/?datasets=benkagg/bagzoek"
+
+  const lookupURL = `${baseUrl}&lat=${xy.lat}&lon=${xy.lng}&radius=100`
+  const res = await query<any>(lookupURL);
+
+  return res.features.length > 0 ? res.features[0].properties.id : null;
+}
+
 export async function pointQueryChain(
   click: ClickContext,
   feature?: any
 ): Promise<PointQueryResult> {
   const xy = click.latlng;
 
-  const bagUrl = requestFormatter(
-    "https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse?",
-    xy
-  );
+  // const bagUrl = requestFormatter(
+  //   "https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse?",
+  //   xy
+  // );
 
-  const bagQuery = await query<any>(bagUrl);
-  const queryResult = responseFormatter(bagQuery);
+  // const bagQuery = await query<any>(bagUrl);
+  // const queryResult = responseFormatter(bagQuery);
 
-  const bagID = await getBagID(queryResult);
+  // const bagID = await getBagID(queryResult);
+  const bagID = await getClosestBagID(xy);
   let dichtstbijzijnd_adres: BagAdres | null = null;
 
-  if (queryResult) {
+  if (bagID) {
     const nummeraanduidingUrl =
       "https://api.data.amsterdam.nl/v1/bag/nummeraanduidingen/";
     const res = await query<any>(nummeraanduidingUrl + bagID + "/?format=json");
