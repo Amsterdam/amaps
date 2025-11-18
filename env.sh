@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FOLDER=/usr/share/nginx/html
+FOLDER=/var/www/html/env-config
 CONFIG_FILE=$FOLDER/env-config.js
 
 # Recreate file
