@@ -18,9 +18,13 @@ echo "Runtime environment file created at $CONFIG_FILE"
 EMBED_FILE="/var/www/html/multiselect.iife.js"
 
 if [ -f "$EMBED_FILE" ]; then
-  echo "Injecting AMSTERDAM_API_KEY into multiselect.iife.js"
-  
-  # Prepend a line with the runtime env var
-  sed -i "1s|^|window.AMSTERDAM_API_KEY=\"${AMSTERDAM_API_KEY}\";\n|" "$EMBED_FILE"
+    SOURCE="/var/www/html/multiselect.iife.js"
+    TARGET="/var/www/html/env-config/multiselect.iife.js"
+
+    # Copy original file into writable directory
+    cp $SOURCE $TARGET
+
+    # Inject the key into the writable copy
+    sed -i "1s|^|window.AMSTERDAM_API_KEY=\"${AMSTERDAM_API_KEY}\";\n|" "$TARGET"
 
 fi
