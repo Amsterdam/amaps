@@ -33,23 +33,21 @@ FROM nginx:stable-alpine AS production
 EXPOSE 8080
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy build output to Nginx
-COPY --from=build /app/app/dist/. /usr/share/nginx/html/
+# Build output copied to a writable directory
+COPY --from=build /app/app/dist/. /var/www/html/
 
 # Copy runtime env script
 WORKDIR /app
 COPY env.sh env.sh
 
-# Add bash so we can run the script
 RUN apk add --no-cache bash
 RUN chmod +x env.sh
 
-# Make web root writable for injection at runtime
-RUN chmod -R 777 /usr/share/nginx/html
+# Make /var/www/html writable so env.sh can inject env variable
+RUN chmod -R 777 /var/www/html
 
-# Start container: run env.sh, inject secrets, then make web root read-only, then start Nginx
 CMD ["/bin/bash", "-c", "\
     /app/env.sh && \
-    chmod -R a-w /usr/share/nginx/html && \
+    chmod -R a-w /var/www/html && \
     nginx -g 'daemon off;' \
 "]
