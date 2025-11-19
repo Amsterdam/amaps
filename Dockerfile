@@ -45,7 +45,7 @@ RUN apk add --no-cache bash
 RUN chmod +x env.sh
 
 # Make web root writable for injection at runtime
-RUN chmod -R 777 /usr/share/nginx/html
+RUN chmod -R 777 /var/www/html
 
 # Start container: run env.sh, inject secrets, then make web root read-only, then start Nginx
 CMD ["/bin/bash", "-c", "\

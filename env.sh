@@ -15,7 +15,7 @@ echo "}" >> $CONFIG_FILE
 echo "Runtime environment file created at $CONFIG_FILE"
 
 # Inject into the embedded IIFE bundle
-EMBED_FILE="/var/www/html/multiselect.iife.js"
+EMBED_FILE="/var/www/html/dist/multiselect.iife.js"
 
 if [ -f "$EMBED_FILE" ]; then
   echo "Injecting AMSTERDAM_API_KEY into multiselect.iife.js"
