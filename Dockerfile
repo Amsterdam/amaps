@@ -18,6 +18,13 @@ COPY tsconfig.json ./
 
 RUN npm run build
 
+# Pre-inject AMSTERDAM_API_KEY into multiselect.iife.js at build time
+RUN EMBED_FILE=/app/app/dist/multiselect.iife.js && \
+    if [ -f "$EMBED_FILE" ]; then \
+        echo "Pre-injecting AMSTERDAM_API_KEY into multiselect.iife.js" && \
+        sed -i "1s|^|window.AMSTERDAM_API_KEY=\"${AMSTERDAM_API_KEY}\";\n|" "$EMBED_FILE"; \
+    fi
+
 FROM build AS test
 CMD ["npm", "run", "test"]
 
