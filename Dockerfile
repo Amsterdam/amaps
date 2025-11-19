@@ -34,7 +34,7 @@ EXPOSE 8080
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy build output to Nginx
-COPY --from=build /app/app/dist/. /usr/share/nginx/html/
+COPY --from=build /app/app/dist/. /var/www/html/
 
 # Copy runtime env script
 WORKDIR /app
