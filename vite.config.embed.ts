@@ -20,6 +20,9 @@ export default defineConfig({
   },
   define: {
     "process.env.NODE_ENV": JSON.stringify("production"),
+    "process.env.AMSTERDAM_API_KEY": JSON.stringify(
+      process.env.AMSTERDAM_API_KEY || ""
+    ),
   },
   server: {
     watch: {
