@@ -18,13 +18,6 @@ COPY tsconfig.json ./
 
 RUN npm run build
 
-# Pre-inject AMSTERDAM_API_KEY into multiselect.iife.js at build time
-RUN EMBED_FILE=/app/app/dist/multiselect.iife.js && \
-    if [ -f "$EMBED_FILE" ]; then \
-        echo "Pre-injecting AMSTERDAM_API_KEY into multiselect.iife.js" && \
-        sed -i "1s|^|window.AMSTERDAM_API_KEY=\"${AMSTERDAM_API_KEY}\";\n|" "$EMBED_FILE"; \
-    fi
-
 FROM build AS test
 CMD ["npm", "run", "test"]
 
@@ -51,5 +44,12 @@ COPY env.sh env.sh
 RUN apk add --no-cache bash
 RUN chmod +x env.sh
 
-CMD ["/bin/bash", "-c", "/app/env.sh && nginx -g 'daemon off;'"]
+# Make web root writable for injection at runtime
+RUN chmod -R 777 /usr/share/nginx/html
 
+# Start container: run env.sh, inject secrets, then make web root read-only, then start Nginx
+CMD ["/bin/bash", "-c", "\
+    /app/env.sh && \
+    chmod -R a-w /usr/share/nginx/html && \
+    nginx -g 'daemon off;' \
+"]
