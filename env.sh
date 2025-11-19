@@ -21,5 +21,6 @@ if [ -f "$EMBED_FILE" ]; then
   echo "Injecting AMSTERDAM_API_KEY into multiselect.iife.js"
   
   # Append a line with the runtime env var
-  sed -i "1s;^;window.AMSTERDAM_API_KEY=\"${AMSTERDAM_API_KEY}\";\n;" "$EMBED_FILE"
+  sed -i "1s|^|window.AMSTERDAM_API_KEY=\"${AMSTERDAM_API_KEY}\";\n|" "$EMBED_FILE"
+
 fi
