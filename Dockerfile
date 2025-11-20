@@ -2,9 +2,6 @@ FROM node:23-alpine AS base
 WORKDIR /app
 COPY package.json package-lock.json tsconfig.json ./
 
-ARG AMSTERDAM_API_KEY
-ENV AMSTERDAM_API_KEY=$AMSTERDAM_API_KEY
-
 RUN npm install
 
 COPY app /app/src
