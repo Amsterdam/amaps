@@ -13,19 +13,11 @@ describe("pointQueryChain", () => {
 
     // Mock responses for the API calls
     const mockBagQueryResponse = {
-      response: {
-        docs: [{ id: "12345" }],
-      },
-    };
-
-    const mockLookupResponse = {
-      response: {
-        docs: [
-          {
-            nummeraanduiding_id: "12345",
-          },
-        ],
-      },
+      features: [
+        {
+          properties: { id: "12345" },
+        },
+      ],
     };
 
     const mockBagIDResponse = {
@@ -47,15 +39,10 @@ describe("pointQueryChain", () => {
       ],
     };
 
-    // Mock the fetch calls
     (fetch as vi.Mock)
       .mockResolvedValueOnce({
         ok: true,
         json: async () => mockBagQueryResponse,
-      })
-      .mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockLookupResponse,
       })
       .mockResolvedValueOnce({
         ok: true,
@@ -102,7 +89,7 @@ describe("pointQueryChain", () => {
     });
 
     await expect(pointQueryChain(mockClick, mockFeature)).rejects.toThrow(
-      "query failed: https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse?"
+      "query failed: https://api.data.amsterdam.nl/geosearch/?datasets=benkagg/bagzoek&lat=52.370216&lon=4.895168&radius=100"
     );
   });
 });

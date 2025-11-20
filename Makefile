@@ -22,4 +22,4 @@ requirements:  ## Upgrade dependencies
 	$(run) upgrade $(ARGS)
 
 test:
-	@echo "Skipping test (temporarily disabled)"
+	$(run) test-unit

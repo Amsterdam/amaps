@@ -40,14 +40,9 @@ COPY --from=build /app/app/dist/. /var/www/html/
 WORKDIR /app
 COPY env.sh env.sh
 
-# Add bash so we can run the script
 RUN apk add --no-cache bash
 RUN chmod +x env.sh
 
-# Make web root writable for injection at runtime
-RUN chmod -R 777 /var/www/html
-
-# Start container: run env.sh, inject secrets, then make web root read-only, then start Nginx
 CMD ["/bin/bash", "-c", "\
     /app/env.sh && \
     nginx -g 'daemon off;' \
