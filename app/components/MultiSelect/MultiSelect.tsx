@@ -26,10 +26,10 @@ const MultiSelectInner: FunctionComponent<MultiSelectProps> = (props) => {
         {!isInteractionDisabled && <Controls multiselect={true} />}
         {!isInteractionDisabled && <AddressSearch multiselect={true} />}
         <Legend />
-        <Counter />
+        {!isInteractionDisabled && <Counter />}
       </div>
       <div className={styles.resultWrapper} style={wrapperFlexStyle}>
-        <MultiSelectResult />
+        {!isInteractionDisabled && <MultiSelectResult />}
       </div>
     </div>
   );
