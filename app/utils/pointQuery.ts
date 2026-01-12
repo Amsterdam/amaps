@@ -57,28 +57,18 @@ async function query<T>(url: string): Promise<T> {
   return res.json();
 }
 
-async function getBagID(id: any): Promise<string> {
-  if (!id) {
-    throw new Error("No adress ID was given");
-  }
-  const lookupURL =
-    "https://api.pdok.nl/bzk/locatieserver/search/v3_1/lookup?id=";
-  const res = await query<any>(lookupURL + id);
-
-  return res.response.docs[0].nummeraanduiding_id;
-}
-
-function responseFormatter(res: any): any {
-  if (!res.response.docs) {
-    throw new Error("no results property found on query response.");
-  }
-
-  return res.response.docs.length > 0 ? res.response.docs[0].id : null;
-}
-
 function findOmgevingFeature(features: any[], type: string): any | null {
   const feature = features.find((f) => f.properties.type === type);
   return feature ? feature.properties : null;
+}
+
+async function getClosestBagID(xy: LatLng): Promise<string | null>{
+  const baseUrl = "https://api.data.amsterdam.nl/geosearch/?datasets=benkagg/bagzoek"
+
+  const lookupURL = `${baseUrl}&lat=${xy.lat}&lon=${xy.lng}&radius=100`
+  const res = await query<any>(lookupURL);
+
+  return res.features.length > 0 ? res.features[0].properties.id : null;
 }
 
 export async function pointQueryChain(
@@ -87,18 +77,10 @@ export async function pointQueryChain(
 ): Promise<PointQueryResult> {
   const xy = click.latlng;
 
-  const bagUrl = requestFormatter(
-    "https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse?",
-    xy
-  );
-
-  const bagQuery = await query<any>(bagUrl);
-  const queryResult = responseFormatter(bagQuery);
-
-  const bagID = await getBagID(queryResult);
+  const bagID = await getClosestBagID(xy);
   let dichtstbijzijnd_adres: BagAdres | null = null;
 
-  if (queryResult) {
+  if (bagID) {
     const nummeraanduidingUrl =
       "https://api.data.amsterdam.nl/v1/bag/nummeraanduidingen/";
     const res = await query<any>(nummeraanduidingUrl + bagID + "/?format=json");

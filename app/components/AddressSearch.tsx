@@ -9,6 +9,7 @@ import { constructAddress } from "~/utils/constructAddress";
 interface Suggestion {
   id: string;
   label: string;
+  doc: any;
 }
 
 const AddressSearch = ({ multiselect }: { multiselect: boolean }) => {
@@ -40,14 +41,16 @@ const AddressSearch = ({ multiselect }: { multiselect: boolean }) => {
       try {
         const encodedSearchTerm = encodeURIComponent(searchTerm);
         const res = await fetch(
-          `https://api.pdok.nl/bzk/locatieserver/search/v3_1/suggest?fq=gemeentenaam:amsterdam&fq=type:adres&q=${encodedSearchTerm}`
+          `https://api.data.amsterdam.nl/dataselectie/v2/bag/search/adres?q=${encodedSearchTerm}`,
+          { headers: { "x-api-key": (window as any).AMSTERDAM_API_KEY } }
         );
         const json = await res.json();
-        const data = json.response.docs;
+        const data = json.value ?? [];
 
         const addresses = data.map((doc: any) => ({
-          id: doc.id,
-          label: doc.weergavenaam,
+          id: doc.identificatie,
+          label: `${doc.openbareruimteNaam} ${doc.huisnummer}${doc.huisletter ?? ""}${doc.huisnummertoevoeging ?? ""}, ${doc.postcode ?? ""} ${doc.woonplaatsNaam}`,
+          doc,
         }));
         setSuggestions(addresses);
       } catch (err) {
@@ -60,25 +63,24 @@ const AddressSearch = ({ multiselect }: { multiselect: boolean }) => {
     return () => clearTimeout(debounce);
   }, [searchTerm]);
 
-  const handleSelect = async (id: string, label: string) => {
+  const handleSelect = (id: string, label: string, doc?: any) => {
     setDisplaySuggestions(false);
     setSearchTerm(label);
 
-    const res = await fetch(
-      `https://api.pdok.nl/bzk/locatieserver/search/v3_1/lookup?fq=gemeentenaam:amsterdam&fq=type:adres&id=${id}`
-    );
-    const data = await res.json();
-    const coordinates = data.response.docs[0]?.centroide_ll;
-    if (coordinates && mapInstance) {
-      const [lng, lat] = coordinates.match(/\d+\.\d*/g).map(Number);
-      mapInstance.setView([lat, lng], 16);
+    if (doc && mapInstance) {
+      const lat = doc.latitude;
+      const lng = doc.longitude;
+      if (lat && lng) {
+        mapInstance.setView([lat, lng], 16);
+      }
     }
   };
 
   // If user presses enter or search, choose the first suggestion in the list.
   const handleSubmit = (e?: React.FormEvent) => {
     if (suggestions.length > 0) {
-      handleSelect(suggestions[0].id, suggestions[0].label);
+      const suggestion = suggestions[0];
+      handleSelect(suggestion.id, suggestion.label, suggestion.doc);
     }
   };
 
@@ -104,7 +106,10 @@ const AddressSearch = ({ multiselect }: { multiselect: boolean }) => {
           {suggestions.map(
             (s) =>
               s.label.length > searchTerm.length && (
-                <li key={s.id} onClick={() => handleSelect(s.id, s.label)}>
+                <li
+                  key={s.id}
+                  onClick={() => handleSelect(s.id, s.label, s.doc)}
+                >
                   {s.label}
                 </li>
               )

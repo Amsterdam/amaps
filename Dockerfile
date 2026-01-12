@@ -27,9 +27,20 @@ CMD ["ncu", "-u", "--doctor", "--target latest"]
 
 FROM nginx:stable-alpine AS production
 
-
 EXPOSE 8080
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=build /app/app/dist/. /usr/share/nginx/html/
+# Copy build output to Nginx
+COPY --from=build /app/app/dist/. /var/www/html/
 
+# Copy runtime env script
+WORKDIR /app
+COPY env.sh env.sh
+
+RUN apk add --no-cache bash
+RUN chmod +x env.sh
+
+CMD ["/bin/bash", "-c", "\
+    /app/env.sh && \
+    nginx -g 'daemon off;' \
+"]
