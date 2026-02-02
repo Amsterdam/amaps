@@ -309,8 +309,8 @@ setPattern(pattern);
     if (mapInstance.getZoom() >= 16) {
       const labelGroup = L.layerGroup();
       markerData.forEach((feature: Feature) => { 
-        // Handle the case where the parking API returns a GeometryCollection
         let geometry = feature.geometry;
+        // Handle the case where the parking API returns a GeometryCollection
         if (geometry.type === 'GeometryCollection') {
           // Extract the first Polygon from the collection
           const polygon = geometry.geometries.find(g => g.type === 'Polygon');
