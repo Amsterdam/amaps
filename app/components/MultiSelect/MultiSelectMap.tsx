@@ -309,7 +309,20 @@ setPattern(pattern);
     if (mapInstance.getZoom() >= 16) {
       const labelGroup = L.layerGroup();
       markerData.forEach((feature: Feature) => { 
-        const latlngs = feature.geometry.coordinates[0].map(coord => 
+        let geometry = feature.geometry;
+        // Handle the case where the parking API returns a GeometryCollection
+        if (geometry.type === 'GeometryCollection') {
+          // Extract the first Polygon from the collection
+          const polygon = geometry.geometries.find(g => g.type === 'Polygon');
+          if (!polygon) return;
+          geometry = polygon;
+        }
+
+        if (geometry.type !== 'Polygon') return;
+
+        const coordinates = geometry.coordinates;
+
+        const latlngs = coordinates[0].map(coord => 
           L.latLng(coord[1], coord[0])
         );
         const center = L.polygon(latlngs).getBounds().getCenter();
