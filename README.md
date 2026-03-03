@@ -16,3 +16,12 @@ This repository contains several scripts for specific use cases, like querying c
 ### with docker
 
 To run the application in Docker: `make build && make dev` (accessible on port 8095)
+
+## Embedding
+
+Amaps can be used as an embedded element in other forms.
+
+- `multiselect`: can be embedded in a form using the generated `multiselect.iife.js` output.  
+  Selected features are written to a hidden input field in JSON format, so when the form is submitted, the data is sent along automatically.  
+
+- `pointquery`: to be developed
