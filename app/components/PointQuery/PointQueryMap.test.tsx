@@ -18,11 +18,14 @@ vi.mock("./PointQueryContext", () => ({
 
 describe("PointQueryMap Component", () => {
   beforeEach(() => {
-    // Mock Leaflet's Map
-    vi.spyOn(L, "Map").mockImplementation(() => ({
-      on: vi.fn(),
-      attributionControl: { setPrefix: vi.fn() },
-    } as unknown as L.Map));
+    vi.spyOn(L, "Map").mockImplementation(function () {
+      return {
+        on: vi.fn(),
+        attributionControl: {
+          setPrefix: vi.fn(),
+        },
+      } as unknown as L.Map;
+    });
   });
 
   afterEach(() => {
