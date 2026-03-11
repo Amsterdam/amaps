@@ -48,7 +48,7 @@ export interface PointQueryResult {
 
 function requestFormatter(baseUrl: string, xy: LatLng): string {
   const rd = transformCoords.forward([xy.lng, xy.lat]);
-  return `${baseUrl}X=${rd[0]}&Y=${rd[1]}&type=adres&distance=100&`;
+  return `${baseUrl}X=${rd[0]}&Y=${rd[1]}&type=adres&distance=200&`;
 }
 
 async function query<T>(url: string): Promise<T> {
