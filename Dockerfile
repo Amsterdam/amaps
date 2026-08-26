@@ -1,8 +1,11 @@
-FROM node:23-alpine AS base
+FROM node:24.19.0-alpine AS base
 WORKDIR /app
+
+RUN npm install -g npm@12.0.2
+
 COPY package.json package-lock.json tsconfig.json ./
 
-RUN npm install
+RUN npm ci
 
 COPY app /app/src
 
