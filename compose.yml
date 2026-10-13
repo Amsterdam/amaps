@@ -5,7 +5,7 @@ services:
       context: .
     environment:
       - TZ=Europe/Amsterdam
-    image: ${REGISTRY:-localhost:5001}/${REPOSITORY:-opdrachten/amaps}:${VERSION:-latest}
+    image: ${REGISTRY:-localhost:5001}/${REPOSITORY:-ams-opdr/amaps}:${VERSION:-latest}
     ports:
       - "3000:8080"
 
